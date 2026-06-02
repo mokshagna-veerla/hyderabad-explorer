@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hyderabad 360 - Integrated City Exploration & Booking Platform</title>
+  <meta name="description" content="Explore Hyderabad's heritage, book tourist tickets, check live metro lines, restaurant reservations, movie seat bookings, and live traffic details.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- SIDEBAR DIMMING OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="app-container">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+      <!-- BRAND LOGO & CLOSE BUTTON -->
+      <div class="logo-container" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <!-- Redesigned Combined Logo SVG inside Sidebar -->
+          <svg class="logo-icon combined-logo-svg" viewBox="0 0 160 160" style="width: 38px; height: 38px; filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.4));">
+            <!-- High-Tech Skyline Silhouette Background -->
+            <path d="M10 130 L10 90 L25 90 L25 100 L35 100 L35 70 L50 70 L50 85 L65 85 L65 50 L80 50 L80 130 Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <path d="M90 130 L90 60 L105 60 L105 80 L115 80 L115 45 L130 45 L130 90 L145 90 L145 130 Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            
+            <!-- Charminar Silhouette -->
+            <g transform="translate(14, 55) scale(0.6)">
+              <rect x="20" y="70" width="80" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="4"/>
+              <path d="M45 110 A15 15 0 0 1 75 110" fill="none" stroke="currentColor" stroke-width="4"/>
+              <rect x="25" y="60" width="70" height="10" fill="none" stroke="currentColor" stroke-width="3"/>
+              <line x1="25" y1="70" x2="25" y2="15" stroke="currentColor" stroke-width="5"/>
+              <line x1="95" y1="70" x2="95" y2="15" stroke="currentColor" stroke-width="5"/>
+              <path d="M20 15 Q25 5 30 15 Z" fill="currentColor"/>
+              <path d="M90 15 Q95 5 100 15 Z" fill="currentColor"/>
+            </g>
+            
+            <!-- Buddha Statue -->
+            <g transform="translate(62, 50) scale(0.85)">
+              <path d="M10 80 C 15 75, 35 75, 40 80 C 35 85, 15 85, 10 80 Z" fill="currentColor" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M15 80 C 12 65, 18 55, 25 50 C 32 55, 38 65, 35 80 Z" fill="currentColor"/>
+              <circle cx="25" cy="40" r="8" fill="currentColor"/>
+              <path d="M30 60 Q35 55 32 50" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+          </svg>
+          <div class="logo-text" style="display: flex; flex-direction: column;">
+            <h1 style="font-size: 15px; margin: 0; font-weight: 800; font-family: var(--font-title); background: linear-gradient(135deg, var(--text-primary) 30%, var(--heritage-gold) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">HYDERABAD 360</h1>
+            <span style="font-size: 8px; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 1px;">City Portal</span>
+          </div>
+        </div>
+        
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" title="Close Menu" style="background: transparent; border: none; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 6px; border-radius: 50%;">
+          <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2.5;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <nav class="nav-menu">
+        <li class="nav-item active" data-tab="dashboard">
+          <button>
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+            Dashboard
+          </button>
+        </li>
+        <li class="nav-item" data-tab="map">
+          <button>
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/><path d="M12 2a8 8 0 00-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 00-8-8z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+            Interactive Map
+          </button>
+        </li>
+        <li class="nav-item" data-tab="planner">
+          <button>
+            <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/><rect x="8" y="2" width="8" height="2" rx="0.5" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+            Plan My Day
+          </button>
+        </li>
+        <li class="nav-item" data-tab="experiences">
+          <button>
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+            Discover Hyderabad
+          </button>
+        </li>
+        <li class="nav-item" data-tab="history">
+          <button>
+            <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Heritage & History
+          </button>
+        </li>
+        <li class="nav-item" data-tab="weather">
+          <button>
+            <svg viewBox="0 0 24 24"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.99A7.5 7.5 0 1115.5 2a8.5 8.5 0 00-12.5 13z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Weather & Topography
+          </button>
+        </li>
+        <li class="nav-item" data-tab="tourist">
+          <button>
+            <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="11" r="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Tourist Landmarks
+          </button>
+        </li>
+        <li class="nav-item" data-tab="transit">
+          <button>
+            <svg viewBox="0 0 24 24"><path d="M5 4h14a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2zm0 10v4a2 2 0 002 2h10a2 2 0 002-2v-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Public Transit
+          </button>
+        </li>
+        <li class="nav-item" data-tab="dining">
+          <button>
+            <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Gastronomy & Hotels
+          </button>
+        </li>
+        <li class="nav-item" data-tab="traffic">
+          <button>
+            <svg viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Traffic Tracker
+          </button>
+        </li>
+        <li class="nav-item" data-tab="entertainment">
+          <button>
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+            Cinemas & Shows
+          </button>
+        </li>
+        <li class="nav-item" data-tab="safety">
+          <button style="color: var(--safety-crimson);">
+            <svg viewBox="0 0 24 24" style="stroke: var(--safety-crimson);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Nagarik Safety Portal
+          </button>
+        </li>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="quick-my-bookings-btn" id="openBookingsPanelBtn">
+          My Bookings
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN APP WRAPPER -->
+    <main class="main-content">
+      
+      <!-- TOP HEADER BAR -->
+      <!-- TOP HEADER BAR -->
+      <header class="top-header">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <button class="hamburger-menu-btn" id="sidebarToggleBtn" title="Toggle Navigation Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          
+          <!-- REDESIGNED COMBINED LOGO -->
+          <div class="logo-container header-logo" id="headerLogoContainer" style="display: flex; align-items: center; gap: 10px; margin-bottom: 0;">
+            <!-- Combined SVG with Charminar, High-Tech Skyline, and Buddha silhouette -->
+            <svg class="logo-icon combined-logo-svg" viewBox="0 0 160 160" style="width: 44px; height: 44px; filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.45));">
+              <!-- High-Tech Skyline Silhouette Background -->
+              <path d="M10 130 L10 90 L25 90 L25 100 L35 100 L35 70 L50 70 L50 85 L65 85 L65 50 L80 50 L80 130 Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+              <path d="M90 130 L90 60 L105 60 L105 80 L115 80 L115 45 L130 45 L130 90 L145 90 L145 130 Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+              
+              <!-- Charminar Silhouette (Left Center) -->
+              <g transform="translate(14, 55) scale(0.6)">
+                <!-- Base -->
+                <rect x="20" y="70" width="80" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="4"/>
+                <!-- Main archway -->
+                <path d="M45 110 A15 15 0 0 1 75 110" fill="none" stroke="currentColor" stroke-width="4"/>
+                <!-- Roof / Pillars -->
+                <rect x="25" y="60" width="70" height="10" fill="none" stroke="currentColor" stroke-width="3"/>
+                <!-- 4 Minarets/Towers -->
+                <line x1="25" y1="70" x2="25" y2="15" stroke="currentColor" stroke-width="5"/>
+                <line x1="95" y1="70" x2="95" y2="15" stroke="currentColor" stroke-width="5"/>
+                <!-- Tower domes -->
+                <path d="M20 15 Q25 5 30 15 Z" fill="currentColor"/>
+                <path d="M90 15 Q95 5 100 15 Z" fill="currentColor"/>
+              </g>
+              
+              <!-- Buddha Statue Silhouette (Center) -->
+              <g transform="translate(62, 50) scale(0.85)">
+                <!-- Lotus pedestal -->
+                <path d="M10 80 C 15 75, 35 75, 40 80 C 35 85, 15 85, 10 80 Z" fill="currentColor" stroke="currentColor" stroke-width="1.5"/>
+                <!-- Meditating Body (Buddha) -->
+                <path d="M15 80 C 12 65, 18 55, 25 50 C 32 55, 38 65, 35 80 Z" fill="currentColor"/>
+                <circle cx="25" cy="40" r="8" fill="currentColor"/>
+                <!-- Blessing Hand Silhouette -->
+                <path d="M30 60 Q35 55 32 50" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+              </g>
+            </svg>
+            <div class="logo-text header-logo-text" style="display: flex; flex-direction: column;">
+              <h1 id="brandNameText" style="font-size: 16px; margin: 0; font-weight: 800; font-family: var(--font-title); background: linear-gradient(135deg, var(--text-primary) 30%, var(--heritage-gold) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">HYDERABAD 360</h1>
+              <span id="brandSubText" style="font-size: 8px; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 1.5px;">Heritage & High-Tech</span>
+            </div>
+          </div>
+        </div>
+        <div class="header-search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"/></svg>
+          <input type="text" placeholder="Search places, restaurants, transit codes..." id="globalSearchInput">
+          <button class="voice-search-btn" id="voiceSearchBtn" title="Voice Search">
+            <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:var(--text-muted); fill:none; stroke-width:2;"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1M12 19v4M8 23h8"/></svg>
+          </button>
+        </div>
+
+
+
+        <div class="header-meta">
+          <!-- Localization Dropdown -->
+          <div class="lang-selector-wrapper">
+            <select class="form-control" id="languageSelect" style="padding: 4px 26px 4px 10px; font-size: 11.5px; height: 30px; background-color: rgba(10,14,23,0.8); border-color: rgba(212,175,55,0.25); color: var(--light-gold); font-family: var(--font-title); font-weight:600;">
+              <option value="en" selected>English</option>
+              <option value="te">తెలుగు (Telugu)</option>
+              <option value="hi">हिन्दी (Hindi)</option>
+              <option value="ur">اردو (Urdu)</option>
+            </select>
+          </div>
+
+          <!-- Accessibility Panel Buttons -->
+          <div class="accessibility-icons-row" style="display:flex; gap:6px;">
+            <button class="header-icon-btn" id="lightModeToggle" title="Toggle Light Mode">
+              <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+            <button class="header-icon-btn" id="highContrastToggle" title="High Contrast Mode">
+              <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2;"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 000 20V2z" fill="currentColor"/></svg>
+            </button>
+            <button class="header-icon-btn" id="largeTextToggle" title="Toggle Font Size (A+)">
+              <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2.5;"><path d="M4 19L11 4h2l7 15M6.5 14h11M12 4v15"/></svg>
+            </button>
+            <button class="header-icon-btn" id="readAloudToggle" title="Text-to-Speech (Screen Reader)">
+              <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2;"><path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+            </button>
+          </div>
+
+          <!-- Weather widget -->
+          <div class="header-weather-widget" onclick="switchTab('weather')" style="cursor:pointer;">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <span id="headerTemp">33°C</span>
+          </div>
+
+          <!-- Time clock -->
+          <div class="header-clock" id="headerClock">12:00:00 PM</div>
+
+          <!-- Notification Bell -->
+          <button class="header-icon-btn notification-bell-btn" id="notificationBellBtn" style="position:relative;" title="Smart Notifications">
+            <svg viewBox="0 0 24 24" style="width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2;"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <span class="active-badge" id="notificationCount" style="position:absolute; top:-2px; right:-2px; background:var(--safety-crimson); color:white; font-size:9px; font-weight:bold; border-radius:50%; width:13px; height:13px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 4px #ef4444;">3</span>
+          </button>
+
+          <!-- User Authentication Section -->
+          <div class="header-auth-wrapper" style="position:relative; display:flex; align-items:center; margin-right: 4px;">
+            <!-- Sign In Trigger Button -->
+            <button class="btn-primary" id="headerAuthBtn" style="padding: 6px 14px; font-size: 12.5px; height: 32px; font-weight:600; display:flex; align-items:center; gap:6px;">
+              <svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2.5;"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Sign In</span>
+            </button>
+            
+            <!-- Logged-in User Profile Dropdown Button -->
+            <div class="header-user-dropdown-container" id="headerUserDropdown" style="display: none; align-items: center; gap: 8px; cursor: pointer;">
+              <div class="user-avatar-circle" id="userAvatarCircle" style="width: 32px; height: 32px; border-radius: 50%; background: var(--heritage-gold); color: var(--bg-slate); display: flex; align-items: center; justify-content: center; font-weight: bold; font-family: var(--font-title); font-size: 13.5px; border: 2px solid var(--heritage-gold); overflow: hidden; background-size: cover; background-position: center;">
+                U
+              </div>
+              <span class="user-name-text" id="headerUserName" style="font-size: 13px; font-weight: 700; color: var(--text-primary); font-family: var(--font-title);">User</span>
+              <svg viewBox="0 0 24 24" style="width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5;"><polyline points="6 9 12 15 18 9"/></svg>
+              
+              <!-- Dropdown Content -->
+              <div class="header-user-menu" id="headerUserMenu" style="position:absolute; top:40px; right:0; background:rgba(10, 14, 23, 0.98); border:1px solid var(--bg-card-border); border-radius:var(--radius-sm); padding:6px 0; width:160px; z-index:210; box-shadow:var(--shadow-lg); backdrop-filter:blur(15px); display:none;">
+                <button class="user-menu-item" onclick="switchTab('dashboard')" style="background:transparent; border:none; width:100%; text-align:left; padding:8px 16px; color:var(--text-primary); font-size:12.5px; font-family:var(--font-title); cursor:pointer; display:flex; align-items:center; gap:8px;">
+                  <svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2;"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                  My Dashboard
+                </button>
+                <button class="user-menu-item" id="openBookingsFromMenuBtn" style="background:transparent; border:none; width:100%; text-align:left; padding:8px 16px; color:var(--text-primary); font-size:12.5px; font-family:var(--font-title); cursor:pointer; display:flex; align-items:center; gap:8px;">
+                  <svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  My Bookings
+                </button>
+                <div style="border-top: 1px solid rgba(255,255,255,0.06); margin:4px 0;"></div>
+                <button class="user-menu-item" id="authLogoutBtn" style="background:transparent; border:none; width:100%; text-align:left; padding:8px 16px; color:var(--safety-crimson); font-size:12.5px; font-family:var(--font-title); cursor:pointer; display:flex; align-items:center; gap:8px;">
+                  <svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:none; stroke:var(--safety-crimson); stroke-width:2;"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shopping Cart Toggle -->
+          <button class="header-icon-btn cart-toggle-btn" id="cartToggleBtn" style="position:relative;" title="Shopping Cart">
+            <svg viewBox="0 0 24 24" style="width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+            <span class="active-badge" id="cartCount" style="position:absolute; top:-2px; right:-2px; background:var(--heritage-gold); color:var(--bg-slate); font-size:9px; font-weight:bold; border-radius:50%; width:13px; height:13px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 4px var(--heritage-gold); display:none;">0</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- DYNAMIC NEWS TICKER -->
+      <div class="news-ticker-bar">
+        <div class="news-ticker-label">News Flash</div>
+        <div class="news-ticker-wrapper">
+          <div class="news-ticker-content" id="newsTicker">
+            <span>Hyderabad Metro announces special late-night operations for upcoming T20 match at Uppal Stadium.</span>
+            <span>Birla Planetarium hosts astronomical observatory camp this weekend.</span>
+            <span>Telangana IT Minister announces next phase expansion of T-Hub Cyberabad campus.</span>
+            <span>Monsoon arrival expected early over Deccan plateau; Municipal Corporation alerts response teams.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- APP CONTENT BODY -->
+      <div class="tab-content-container">
+
+        <!-- TAB 1: DASHBOARD -->
+        <section class="tab-pane active" id="pane-dashboard">
+          
+          <!-- Premium Monuments Gallery Showcase at the beginning -->
+          <div class="monuments-showcase-container">
+            <h3 class="monuments-gallery-title" style="font-family: var(--font-title); font-size: 15px; font-weight: 700; color: var(--heritage-gold); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+              <svg viewBox="0 0 24 24" style="width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2.5;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Iconic Monuments & Wonders of Hyderabad
+            </h3>
+            
+            <div class="monuments-showcase-slider">
+              <!-- Card 1: Charminar -->
+              <div class="monument-gallery-card">
+                <img src="charminar.png" alt="Charminar" class="monument-gallery-img">
+                <div class="monument-gallery-overlay">
+                  <h4>Charminar</h4>
+                  <p>The iconic four-minaretted 16th-century mosque at the heart of the historic Old City.</p>
+                </div>
+              </div>
+              
+              <!-- Card 2: Hussain Sagar Lake -->
+              <div class="monument-gallery-card">
+                <img src="https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=600&auto=format&fit=crop" alt="Hussain Sagar Buddha" class="monument-gallery-img">
+                <div class="monument-gallery-overlay">
+                  <h4>Hussain Sagar Lake</h4>
+                  <p>The heart-shaped lake showcasing the monolithic 18-meter high statue of Gautama Buddha.</p>
+                </div>
+              </div>
+              
+              <!-- Card 3: Golconda Fort -->
+              <div class="monument-gallery-card">
+                <img src="golconda.png" alt="Golconda Fort" class="monument-gallery-img">
+                <div class="monument-gallery-overlay">
+                  <h4>Golconda Fort</h4>
+                  <p>The legendary fortress, once the capital of Qutb Shahi dynasty, famous for acoustics and diamonds.</p>
+                </div>
+              </div>
+              
+              <!-- Card 4: Chowmahalla Palace -->
+              <div class="monument-gallery-card">
+                <img src="chowmahalla.png" alt="Chowmahalla Palace" class="monument-gallery-img">
+                <div class="monument-gallery-overlay">
+                  <h4>Chowmahalla Palace</h4>
+                  <p>The seat of the Asaf Jahi dynasty, built in neo-classical style showcasing royal Nizam elegance.</p>
+                </div>
+              </div>
+              
+              <!-- Card 5: Salar Jung Museum -->
+              <div class="monument-gallery-card">
+                <img src="salarjung.png" alt="Salar Jung Museum" class="monument-gallery-img">
+                <div class="monument-gallery-overlay">
+                  <h4>Salar Jung Museum</h4>
+                  <p>One of the world's largest one-man art collections, holding rare antiques and the Veiled Rebecca.</p>
+                </div>
+              </div>
+              
+              <!-- Card 6: Birla Mandir -->
+              <div class="monument-gallery-card">
+                <img src="birlamandir.png" alt="Birla Mandir" class="monument-gallery-img">
+                <div class="monument-gallery-overlay">
+                  <h4>Birla Mandir</h4>
+                  <p>Built entirely of pure white marble on a hilltop overlooking the pristine Hussain Sagar cityscape.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card dash-welcome">
+            <div class="welcome-info">
+              <h1 id="dashWelcomeTitle">Welcome to Hyderabad</h1>
+              <p id="dashWelcomeDesc">Experience the glorious synthesis of heritage and high-tech. Discover centuries-old palaces, relish world-famous Biryani, navigate the swift Metro networks, and access reliable public safety platforms all in one place.</p>
+              <div style="margin-top: 16px;">
+                <button class="btn-primary" onclick="switchTab('tourist')">Explore Landmarks</button>
+                <button class="btn-secondary" onclick="switchTab('planner')" style="margin-left: 8px;">Plan My Day Route</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-stat-row">
+            <div class="dash-stat-card">
+              <div class="dash-stat-icon">
+                <svg viewBox="0 0 24 24" style="stroke:currentColor; fill:none; stroke-width:1.5;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="dash-stat-val">
+                <h4 id="dashStatTraffic">Moderate</h4>
+                <p id="labelStatTraffic">Traffic Pulse</p>
+              </div>
+            </div>
+            <div class="dash-stat-card">
+              <div class="dash-stat-icon">
+                <svg viewBox="0 0 24 24" style="stroke:currentColor; fill:none; stroke-width:1.5;"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.99A7.5 7.5 0 1115.5 2a8.5 8.5 0 00-12.5 13z"/></svg>
+              </div>
+              <div class="dash-stat-val">
+                <h4 id="dashStatWeather">33°C / Clear</h4>
+                <p id="labelStatClimate">Deccan Climate</p>
+              </div>
+            </div>
+            <div class="dash-stat-card">
+              <div class="dash-stat-icon">
+                <svg viewBox="0 0 24 24" style="stroke:currentColor; fill:none; stroke-width:1.5;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+              </div>
+              <div class="dash-stat-val">
+                <h4 id="dashStatAqi">84 (Good)</h4>
+                <p id="labelStatAqi">Air Quality Index</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RED ALERT EMERGENCY WIDGET -->
+          <div class="glass-card alert-card-widget animate-pulse" id="activeEmergencyAlertWidget" style="margin-top:24px; background:linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(185, 28, 28, 0.05) 100%); border: 1px solid rgba(239, 68, 68, 0.4); display:flex; gap:16px; align-items:center;">
+            <div style="background:rgba(239,68,68,0.2); border-radius:50%; width:48px; height:48px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <svg viewBox="0 0 24 24" style="width:24px; height:24px; stroke:var(--safety-crimson); fill:none; stroke-width:2;"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg>
+            </div>
+            <div>
+              <div style="display:flex; gap:12px; align-items:center;">
+                <span class="news-ticker-label" style="background:var(--safety-crimson); font-size:9px; padding:2px 6px;">CIVIC WARNING</span>
+                <span style="font-size:11px; color:var(--text-secondary);" id="alertTimeText">Issued 15 mins ago</span>
+              </div>
+              <h4 style="font-family:var(--font-title); font-size:14.5px; color:#fca5a5; margin:6px 0 2px 0;" id="alertHeadline">GHMC High Rain Warning Alert</h4>
+              <p style="font-size:12.5px; color:var(--text-secondary); line-height:1.5;" id="alertDetails">Heavy rain alert over Deccan plateau. GHMC response teams deployed at lake basins. Commuters advised to avoid waterlogged lowlands.</p>
+            </div>
+          </div>
+
+          <div class="grid-dash" style="margin-top: 24px;">
+            <div style="display:flex; flex-direction:column; gap:24px;">
+              <div class="glass-card">
+                <div class="glass-card-header">
+                  <h3>
+                    <svg viewBox="0 0 24 24" style="stroke:currentColor; fill:none; stroke-width:1.5;"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9"/></svg>
+                    <span id="bulletinTitle">Today's Local Bulletin</span>
+                  </h3>
+                </div>
+                <div class="grid-2" id="dashboardNewsContainer">
+                  <!-- News items loaded by app.js -->
+                </div>
+              </div>
+
+              <!-- UPCOMING EVENTS WIDGET -->
+              <div class="glass-card">
+                <div class="glass-card-header">
+                  <h3>
+                    <svg viewBox="0 0 24 24" style="stroke:currentColor; fill:none; stroke-width:1.5;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    <span id="eventsTitle">Upcoming Cultural & Tech Festivals</span>
+                  </h3>
+                </div>
+                <div class="grid-2" id="dashboardEventsContainer">
+                  <!-- Active events grid populated dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:24px;">
+              <!-- METRO SERVICE STATUS BOARD -->
+              <div class="glass-card">
+                <div class="glass-card-header" style="margin-bottom:12px; padding-bottom:8px;">
+                  <h3>
+                    <svg viewBox="0 0 24 24" style="stroke:currentColor; fill:none; stroke-width:1.5;"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/></svg>
+                    <span id="metroBoardTitle">Metro Rail Service Board</span>
+                  </h3>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px;" id="dashboardMetroUpdatesContainer">
+                  <!-- Lines updates populated dynamically -->
+                </div>
+              </div>
+
+              <div class="glass-card quick-sos-card">
+                <div class="glass-card-header">
+                  <h3 style="color: var(--safety-crimson);">
+                    <svg viewBox="0 0 24 24" style="stroke: var(--safety-crimson); fill:none; stroke-width:1.5;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span id="emergencyTitle">Emergency Safety Panel</span>
+                  </h3>
+                </div>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; text-align: center;" id="emergencyDesc">
+                  Tap the SOS button to instantly alert local safety units with your simulated Deccan coordinates, or submit a priority report.
+                </p>
+                <button class="sos-pulse-btn" id="triggerDashboardSOS">SOS</button>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 12px;">
+                  <button class="btn-primary" style="width: 100%; justify-content: center; background: rgba(239,68,68,0.2); border-color: var(--safety-crimson);" onclick="switchTab('safety')">
+                    File Secure Complaint
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 2: HERITAGE & HISTORY -->
+        <section class="tab-pane" id="pane-history">
+          <div class="page-title-block">
+            <h2>The Nizam's <span>Heritage & Timeline</span></h2>
+            <p>Chronicles of Hyderabad from the Qutb Shahi foundations to the modern IT tech capital.</p>
+          </div>
+          
+          <div class="heritage-timeline" id="heritageTimelineContainer">
+            <!-- Timeline elements dynamically generated by app.js -->
+          </div>
+        </section>
+
+        <!-- TAB 3: WEATHER & TOPOGRAPHY -->
+        <section class="tab-pane" id="pane-weather">
+          <div class="page-title-block">
+            <h2>Deccan <span>Climate & Topography</span></h2>
+            <p>Geographical structure, elevation models, lakes, and climate analytics of the Hyderabad basin.</p>
+          </div>
+
+          <div class="grid-dash">
+            <div class="weather-details-card">
+              <div class="glass-card weather-current-expanded">
+                <div class="weather-expand-main">
+                  <div class="weather-big-temp" id="weatherFullTemp">33°C</div>
+                  <div>
+                    <h3 style="font-size: 20px; font-family: var(--font-title); color: var(--light-gold);" id="weatherStatusTxt">Clear Sky</h3>
+                    <p style="font-size: 13px; color: var(--text-secondary);">Hyderabad District, TG</p>
+                  </div>
+                </div>
+                <div style="text-align: right; font-size: 13px; color: var(--text-secondary);">
+                  <p>AQI Index: <strong style="color: var(--accent-emerald);" id="weatherAqi">84 (Good)</strong></p>
+                  <p>Elevation: <strong>542m (1,778 ft)</strong></p>
+                </div>
+              </div>
+
+              <div class="grid-3">
+                <div class="glass-card" style="padding: 16px;">
+                  <span class="ticket-label">Relative Humidity</span>
+                  <h4 style="font-size: 20px; margin-top: 6px;" id="weatherHumidity">48%</h4>
+                </div>
+                <div class="glass-card" style="padding: 16px;">
+                  <span class="ticket-label">Wind Velocity</span>
+                  <h4 style="font-size: 20px; margin-top: 6px;" id="weatherWind">12 km/h</h4>
+                </div>
+                <div class="glass-card" style="padding: 16px;">
+                  <span class="ticket-label">UV Exposure Index</span>
+                  <h4 style="font-size: 20px; margin-top: 6px;" id="weatherUv">9 (Very High)</h4>
+                </div>
+              </div>
+
+              <div class="glass-card">
+                <div class="glass-card-header">
+                  <h3>
+                    <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    Topographical Structure & Rocks
+                  </h3>
+                </div>
+                <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px;">
+                  Hyderabad is situated on the **Deccan Plateau** and is characterized by a sloping granitic terrain. The city is famous for its unique granite rock formations (like the **Khajaguda Rocks** and **Jubilee Hills Ridge**) which are estimated to be over 2.5 billion years old—among the oldest lithological structures on Earth.
+                </p>
+                <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.6;">
+                  The landscape features twin major man-made lakes, **Osman Sagar** and **Himayat Sagar**, constructed on the Musi River in the early 20th century to prevent catastrophic city flooding, alongside the historical **Hussain Sagar** lake linking Hyderabad and Secunderabad.
+                </p>
+              </div>
+            </div>
+
+            <!-- Topographical SVG Render -->
+            <div class="glass-card topo-map-box">
+              <svg class="topo-svg-map" viewBox="0 0 300 250">
+                <defs>
+                  <radialGradient id="topoGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="var(--primary-teal)" stop-opacity="0.6"/>
+                    <stop offset="100%" stop-color="transparent"/>
+                  </radialGradient>
+                </defs>
+                <!-- Elevation Contour Lines -->
+                <path d="M 30,50 Q 80,40 130,80 T 250,60" fill="none" stroke="rgba(212,175,55,0.15)" stroke-width="1.5"/>
+                <path d="M 20,90 Q 90,80 160,130 T 270,100" fill="none" stroke="rgba(212,175,55,0.25)" stroke-width="2"/>
+                <path d="M 10,130 Q 100,120 180,180 T 290,150" fill="none" stroke="rgba(212,175,55,0.15)" stroke-width="1.5"/>
+                
+                <!-- Musi River path -->
+                <path d="M 10,180 C 80,160 150,190 200,170 T 290,200" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+                <text x="12" y="165" fill="#3b82f6" font-size="9" font-weight="bold">Musi River Basin</text>
+
+                <!-- Hussain Sagar Lake SVG -->
+                <path d="M 140,80 Q 155,70 170,85 Q 165,100 150,95 Z" fill="rgba(37,99,235,0.5)" stroke="#3b82f6" stroke-width="1"/>
+                <circle cx="155" cy="88" r="1.5" fill="var(--heritage-gold)"/>
+                <text x="140" y="65" fill="var(--text-primary)" font-size="9" font-weight="bold">Hussain Sagar</text>
+                
+                <!-- Rock ridge indicator -->
+                <path d="M 50,110 L 70,100 L 90,115" fill="none" stroke="var(--heritage-gold)" stroke-width="2" stroke-linecap="round"/>
+                <text x="45" y="90" fill="var(--heritage-gold)" font-size="8" font-weight="bold">Khajaguda Rock Ridge</text>
+              </svg>
+              <div class="topo-overlay-info">
+                <span class="ticket-label" style="display: block;">Deccan Plateau Geo-Data</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--light-gold);">Average Elevation: 542m MSL</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 4: FAMOUS TOURIST PLACES -->
+        <section class="tab-pane" id="pane-tourist">
+          <div class="page-title-block">
+            <h2>Explore <span>Landmarks & Monuments</span></h2>
+            <p>Explore historic mosques, fortresses, museums, and book passes instantly.</p>
+          </div>
+
+          <div class="grid-3" id="touristGridContainer">
+            <!-- Dynamic landmark cards generated by app.js -->
+          </div>
+        </section>
+
+        <!-- TAB 5: PUBLIC TRANSIT HUB -->
+        <section class="tab-pane" id="pane-transit">
+          <div class="page-title-block">
+            <h2>Public Transit & <span>Smart Metro Network</span></h2>
+            <p>Plan routes across the Red, Blue, and Green lines of the Hyderabad Metro Rail and book TSRTC bus passes.</p>
+          </div>
+
+          <div class="transit-layout">
+            <div class="glass-card">
+              <div class="glass-card-header">
+                <h3>
+                  <svg viewBox="0 0 24 24"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                  Hyderabad Metro Rail Lines
+                </h3>
+              </div>
+              <div class="metro-routes-container" id="metroLinesContainer">
+                <!-- Metro line routes populated by app.js -->
+              </div>
+            </div>
+
+            <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div class="glass-card-header">
+                  <h3>
+                    <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    Metro Smartcard pass
+                  </h3>
+                </div>
+                <div class="metro-card-visual">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                      <div class="metro-card-chip"></div>
+                      <span style="font-size: 11px; text-transform: uppercase; color: var(--heritage-gold); font-weight: 700; margin-top: 8px; display: block;">HydraPass Smart Metro</span>
+                    </div>
+                    <svg style="width: 32px; height: 32px; fill: white;" viewBox="0 0 100 100">
+                      <circle cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="4"/>
+                      <path d="M35 50 L65 50 M50 35 L50 65" stroke="white" stroke-width="8"/>
+                    </svg>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                    <div>
+                      <span class="ticket-label" style="color: rgba(255,255,255,0.5); display: block;">Pass Holder</span>
+                      <span style="font-size: 13px; font-weight: bold;" id="metroCardHolder">N/A</span>
+                    </div>
+                    <div>
+                      <span class="ticket-label" style="color: rgba(255,255,255,0.5); display: block;">Card Number</span>
+                      <span style="font-family: monospace; font-size: 13px;" id="metroCardNumber">0000 0000 0000 0000</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 20px;">
+                <h4 style="font-family: var(--font-title); font-size: 15px; margin-bottom: 8px; color: var(--light-gold);">Purchase Metro / TSRTC Pass</h4>
+                <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.5;">
+                  Purchase unlimited city travel smart passes. Works instantly across all TSRTC local AC buses and all lines of Hyderabad Metro Rail.
+                </p>
+                <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="openQuickBooking('Metro Smart Travel Pass', 250)">Book Smart Transit Card (₹250)</button>
+              </div>
+            </div>
+
+            <!-- TSAVAARI LIVE TRANSIT & FARE PORTAL -->
+            <div class="glass-card" style="grid-column: span 2;" id="tsavaariPortalCard">
+              <div class="glass-card-header" style="display:flex; justify-content:space-between; align-items:center;">
+                <h3>
+                  <svg viewBox="0 0 24 24" style="stroke: var(--accent-emerald); fill:none; stroke-width:2; width:20px; height:20px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  TSavaari Live Transit & Fare Portal
+                </h3>
+              </div>
+              
+              <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
+                Real-time simulated L&T Metro Rail TSavaari service feed. Choose start and destination terminals to calculate exact transit route options, fare parameters, and live rail tracking countdowns.
+              </p>
+
+              <div class="tsavaari-widget-grid">
+                <!-- Journey Inputs -->
+                <div class="tsavaari-inputs-section">
+                  <div class="form-group" style="margin-bottom:12px;">
+                    <label style="font-size: 11px; text-transform: uppercase; color: var(--heritage-gold); font-weight: 600; display:block; margin-bottom:6px;">Origin Station (From)</label>
+                    <select class="form-control" id="tsavaariFromStation" style="width:100%;">
+                      <!-- Populated dynamically by app.js -->
+                    </select>
+                  </div>
+                  
+                  <div class="form-group" style="margin-bottom:18px;">
+                    <label style="font-size: 11px; text-transform: uppercase; color: var(--heritage-gold); font-weight: 600; display:block; margin-bottom:6px;">Destination Station (To)</label>
+                    <select class="form-control" id="tsavaariToStation" style="width:100%;">
+                      <!-- Populated dynamically by app.js -->
+                    </select>
+                  </div>
+                  
+                  <div style="display:flex; gap:10px;">
+                    <button class="btn-primary" style="flex:1; justify-content:center;" onclick="calculateTSavaariJourney()">Calculate Route</button>
+                    <button class="btn-secondary" id="tsavaariAddAllToCartBtn" style="flex:1; justify-content:center; display:none;" onclick="addTSavaariTicketToCart()">Buy QR Pass</button>
+                  </div>
+                </div>
+
+                <!-- Live Results -->
+                <div class="tsavaari-results-section" id="tsavaariResultsContainer">
+                  <div class="tsavaari-placeholder-text">
+                    Select start and destination stations to pull real-time TSavaari route parameters.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- TAB 6: GASTRONOMY & MALLS -->
+        <section class="tab-pane" id="pane-dining">
+          <div class="page-title-block">
+            <h2>Legendary <span>Gastronomy, Hotels & Malls</span></h2>
+            <p>Reserve slots at premium biryani venues, historic Irani chai cafes, and shopping malls.</p>
+          </div>
+
+          <div class="grid-3" id="diningGridContainer">
+            <!-- Dynamic dining/mall cards generated by app.js -->
+          </div>
+        </section>
+
+        <!-- TAB 7: LIVE TRAFFIC PULSE -->
+        <section class="tab-pane" id="pane-traffic">
+          <div class="page-title-block">
+            <h2>Live City <span>Traffic Pulse</span></h2>
+            <p>Simulated real-time congestion tracker map for major traffic junction corridors in Hyderabad.</p>
+          </div>
+
+          <div class="grid-dash">
+            <div class="traffic-canvas-wrapper">
+              <div class="traffic-legend">
+                <div class="legend-item"><div class="legend-color color-clear"></div><span>Clear (35+ km/h)</span></div>
+                <div class="legend-item"><div class="legend-color color-moderate"></div><span>Moderate (15-30 km/h)</span></div>
+                <div class="legend-item"><div class="legend-color color-heavy"></div><span>Congested (&lt; 15 km/h)</span></div>
+              </div>
+              
+              <!-- Canvas Traffic Node Network Map -->
+              <canvas id="trafficCanvas" width="450" height="350" style="width: 100%; height: 100%; min-height: 320px; display: block;"></canvas>
+            </div>
+
+            <div class="traffic-status-sidebar">
+              <div class="glass-card" style="padding: 18px;">
+                <span class="ticket-label" style="display: block; margin-bottom: 4px;">Dynamic Congestion Scale</span>
+                <h3 style="font-size: 24px; font-family: var(--font-title); color: var(--light-gold);" id="trafficCongestionIndex">38% (Moderate)</h3>
+                <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 6px;">
+                  Calculated based on live loop-detectors at HITEC Junction, Secunderabad, and Begumpet Corridors.
+                </p>
+              </div>
+
+              <div class="glass-card">
+                <div class="glass-card-header" style="margin-bottom: 12px; padding-bottom: 8px;">
+                  <h3>Junction Corridors</h3>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;" id="trafficCorridorsContainer">
+                  <!-- Corridor lines loaded by app.js -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 8: CINEMAS & SHOWS -->
+        <section class="tab-pane" id="pane-entertainment">
+          <div class="page-title-block">
+            <h2>Cinemas, Shows & <span>Bookings</span></h2>
+            <p>Book theatrical tickets at AMB Cinemas, Prasad's Multiplex (IMAX Screen), and live cultural events.</p>
+          </div>
+
+          <div class="grid-3" id="moviesGridContainer">
+            <!-- Movie cards generated by app.js -->
+          </div>
+        </section>
+
+        <!-- TAB 9: SAFETY PORTAL -->
+        <section class="tab-pane" id="pane-safety">
+          <div class="page-title-block">
+            <h2>Nagarik <span>Safety & SOS Hub</span></h2>
+            <p>Direct priority alert portal linked with the Hyderabad City Police dispatcher units.</p>
+          </div>
+
+          <div class="grid-dash">
+            <div class="glass-card">
+              <div class="police-badge-box">
+                <!-- Hyderabad Police Seal SVG -->
+                <svg class="police-badge-svg" viewBox="0 0 100 100">
+                  <path d="M50 5 L85 20 L85 60 C85 80 50 95 50 95 C50 95 15 80 15 60 L15 20 Z" fill="#0d5c75" stroke="var(--heritage-gold)" stroke-width="3"/>
+                  <path d="M50 15 L78 28 L78 58 C78 72 50 85 50 85 C50 85 22 72 22 58 L22 28 Z" fill="#083c4d" stroke="rgba(212,175,55,0.4)" stroke-width="1.5"/>
+                  <!-- Ashoka Chakra Pillar Seal Outline inside badge -->
+                  <circle cx="50" cy="50" r="14" fill="none" stroke="var(--heritage-gold)" stroke-width="2"/>
+                  <path d="M50 36 L50 64 M36 50 L64 50" stroke="var(--heritage-gold)" stroke-width="1.5"/>
+                  <text x="50" y="80" fill="var(--light-gold)" font-size="7" font-weight="bold" text-anchor="middle">HYD POLICE</text>
+                </svg>
+              </div>
+
+              <div class="glass-card-header">
+                <h3>Priority Incident Submission Form</h3>
+              </div>
+              
+              <form id="policeComplaintForm" onsubmit="submitPoliceComplaint(event)">
+                <div class="form-group">
+                  <label for="complaintType">Incident Category</label>
+                  <select id="complaintType" class="form-control" required>
+                    <option value="" disabled selected>Select emergency type...</option>
+                    <option value="Road Incident">Road Congestion / Collision</option>
+                    <option value="Medical Dispatch">Immediate Medical Assistance</option>
+                    <option value="Civil Safety">Public Disturbance / Civil Assistance</option>
+                    <option value="She Teams">She Teams (Women Protection Dispatch)</option>
+                    <option value="General Query">Other urgent reporting</option>
+                  </select>
+                </div>
+                
+                <div class="grid-2">
+                  <div class="form-group">
+                    <label for="complaintReporter">Reporter Full Name</label>
+                    <input type="text" id="complaintReporter" class="form-control" placeholder="E.g., Sanjay Rao" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="complaintPhone">Contact Mobile Number</label>
+                    <input type="tel" id="complaintPhone" class="form-control" placeholder="E.g., 9876543210" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="complaintLocation">Active Location Area (Hyderabad)</label>
+                  <select id="complaintLocation" class="form-control" required>
+                    <option value="" disabled selected>Select junction/area...</option>
+                    <option value="Madhapur (HITEC Junction)">Madhapur (HITEC Junction)</option>
+                    <option value="Begumpet Flyover Corridor">Begumpet Flyover Corridor</option>
+                    <option value="Gachibowli Circle">Gachibowli Circle</option>
+                    <option value="Charminar heritage lane">Charminar heritage lane</option>
+                    <option value="Secunderabad Station area">Secunderabad Station area</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="complaintDetails">Incident Details & Observations</label>
+                  <textarea id="complaintDetails" class="form-control" rows="3" placeholder="Provide accurate event markers, plate numbers, or exact coordinates if known..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; background: var(--safety-crimson); border-color: var(--light-gold);">
+                  File & Redraw dispatch (Redirection Sim)
+                </button>
+              </form>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="glass-card emergency-dial-box">
+                <div>
+                  <span class="ticket-label" style="display: block;">Police Control Room</span>
+                  <span style="font-size: 13px; color: var(--text-secondary); margin-top: 4px; display: block;">Local Toll-Free Line</span>
+                </div>
+                <div class="emergency-number">100</div>
+              </div>
+
+              <div class="glass-card emergency-dial-box">
+                <div>
+                  <span class="ticket-label" style="display: block;">She Teams Hotline</span>
+                  <span style="font-size: 13px; color: var(--text-secondary); margin-top: 4px; display: block;">Women Safety Response Unit</span>
+                </div>
+                <div class="emergency-number">1091</div>
+              </div>
+
+              <div class="glass-card" style="border-color: rgba(239,68,68,0.25);">
+                <div class="glass-card-header" style="margin-bottom: 8px;">
+                  <h3 style="color: var(--safety-crimson);">Nagarik Emergency Guidelines</h3>
+                </div>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px;">
+                  * **Rapid Dispatch Units**: Hyderabad Police operates 'Blue Colts' motorcycle units patrolling 24/7. Filing a priority report immediately notifies the closest unit via dispatch terminals.
+                </p>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                  * **She Teams Protection**: Operational in all sectors of Hyderabad City Police commissionerate. Dispatched in civilian clothes to secure and defend women in public transits.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- DYNAMIC GRID OF EMERGENCIES AND LOST & FOUND -->
+          <div class="grid-3" style="margin-top: 24px;">
+            <div class="glass-card">
+              <div class="glass-card-header">
+                <h3>🏛 Emergency Medical & Patrol Centers</h3>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:10px; font-size:13px; color:var(--text-secondary);">
+                <div>
+                  <strong style="color:var(--light-gold);">Apollo Hospitals (Jubilee Hills)</strong>
+                  <p>Helpline: 1066 | Main: 040-23607777</p>
+                </div>
+                <div>
+                  <strong style="color:var(--light-gold);">NIMS Hospital (Panjagutta)</strong>
+                  <p>Emergency: 040-23489244 | Main: 040-23396552</p>
+                </div>
+                <div>
+                  <strong style="color:var(--light-gold);">Madhapur Traffic Police Station</strong>
+                  <p>Control: 040-27853412</p>
+                </div>
+                <div>
+                  <strong style="color:var(--light-gold);">Old City Police Precinct</strong>
+                  <p>Control: 040-27853504</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card">
+              <div class="glass-card-header">
+                <h3>👩 Women Protection & SHE Teams</h3>
+              </div>
+              <p style="font-size:13px; color:var(--text-secondary); line-height:1.5; margin-bottom:12px;">
+                SHE Teams operate stealthily in public places in civil clothes to prevent harassment and ensure protection. Dispatched instantly via panic triggers.
+              </p>
+              <div style="background:rgba(212,175,55,0.05); border:1px solid rgba(212,175,55,0.2); border-radius:var(--radius-md); padding:10px; font-size:12.5px;">
+                <p>📞 WhatsApp Helpline: <strong>+91 94906 16555</strong></p>
+                <p style="margin-top:4px;">🚨 She Team Old City Unit: <strong>040-27852442</strong></p>
+                <p style="margin-top:4px;">🚨 She Team Cyberabad Unit: <strong>040-27853442</strong></p>
+              </div>
+            </div>
+
+            <div class="glass-card">
+              <div class="glass-card-header">
+                <h3>📦 Nagarik Lost & Found Reporting</h3>
+              </div>
+              <form id="lostFoundForm" onsubmit="submitLostFoundReport(event)">
+                <div class="form-group" style="margin-bottom:8px;">
+                  <label for="lostItemName" style="font-size:10px;">Item Name / Category</label>
+                  <input type="text" id="lostItemName" class="form-control" placeholder="E.g., Leather Wallet, Phone" style="padding:6px 10px; font-size:12.5px;" required>
+                </div>
+                <div class="form-group" style="margin-bottom:8px;">
+                  <label for="lostLocation" style="font-size:10px;">Area Lost/Found</label>
+                  <input type="text" id="lostLocation" class="form-control" placeholder="E.g., Charminar, AMB Cinemas" style="padding:6px 10px; font-size:12.5px;" required>
+                </div>
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label for="lostContact" style="font-size:10px;">Contact Number</label>
+                  <input type="tel" id="lostContact" class="form-control" placeholder="E.g., 9876543210" style="padding:6px 10px; font-size:12.5px;" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding:6px 12px; font-size:12px;">
+                  Log Report to Dispatch Logs
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 10: INTERACTIVE CITY MAP -->
+        <section class="tab-pane" id="pane-map">
+          <div class="page-title-block" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+            <div>
+              <h2 id="mapTitle">Interactive City <span>Map & Navigation</span></h2>
+              <p id="mapSubTitle">Explore Hyderabad's hotspots, attractions, metro lines, and emergency centers visually.</p>
+            </div>
+            <!-- Segmented view toggles -->
+            <div class="map-view-toggle-bar" id="mapViewToggleContainer" style="display:flex; gap:8px; background: rgba(10, 14, 23, 0.4); padding: 4px; border-radius: var(--radius-md); border: 1px solid var(--bg-card-border); margin-bottom: 8px;">
+              <button class="showtime-pill active" id="mapToggleVector" onclick="switchMapView('vector')" style="font-weight:600; padding:6px 14px; font-size:12px; border:none;">Nizami Vector Map</button>
+              <button class="showtime-pill" id="mapToggleGoogle" onclick="switchMapView('google')" style="font-weight:600; padding:6px 14px; font-size:12px; border:none;">Google Maps Live</button>
+            </div>
+          </div>
+
+          <div class="grid-dash">
+            <div class="traffic-canvas-wrapper" style="position:relative; min-height: 400px; display: flex; flex-direction: column;">
+              
+              <!-- Google Maps Live Iframe -->
+              <div id="googleMapIframeWrapper" style="display: none; width: 100%; height: 100%; min-height: 380px; flex-grow: 1; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--bg-card-border);">
+                <iframe id="googleMapIframe" src="https://maps.google.com/maps?q=Hyderabad&t=&z=12&ie=UTF8&iwloc=&output=embed" style="width: 100%; height: 100%; min-height: 380px; border: none;" allowfullscreen="" loading="lazy"></iframe>
+              </div>
+
+              <!-- Nizami Stylized Vector Canvas and Filters -->
+              <div id="vectorMapWrapper" style="width: 100%; height: 100%; flex-grow: 1; display: flex; flex-direction: column; position: relative;">
+                <div class="map-category-filters" style="position:absolute; top:12px; right:12px; background:rgba(11,15,25,0.9); border:1px solid rgba(212,175,55,0.25); border-radius:var(--radius-md); padding:10px; z-index:20; display:flex; flex-direction:column; gap:6px;">
+                  <label style="display:flex; align-items:center; gap:8px; font-size:11px; cursor:pointer; color:var(--text-primary); font-family:var(--font-title); font-weight:600;">
+                    <input type="checkbox" id="filterAttractions" checked onchange="drawInteractiveMap()"> 🏛 Attractions
+                  </label>
+                  <label style="display:flex; align-items:center; gap:8px; font-size:11px; cursor:pointer; color:var(--text-primary); font-family:var(--font-title); font-weight:600;">
+                    <input type="checkbox" id="filterMetro" checked onchange="drawInteractiveMap()"> 🚇 Metro Stations
+                  </label>
+                  <label style="display:flex; align-items:center; gap:8px; font-size:11px; cursor:pointer; color:var(--text-primary); font-family:var(--font-title); font-weight:600;">
+                    <input type="checkbox" id="filterDining" checked onchange="drawInteractiveMap()"> 🍲 Dining & Cafes
+                  </label>
+                  <label style="display:flex; align-items:center; gap:8px; font-size:11px; cursor:pointer; color:var(--text-primary); font-family:var(--font-title); font-weight:600;">
+                    <input type="checkbox" id="filterSafety" checked onchange="drawInteractiveMap()"> 🚨 Police & Hospitals
+                  </label>
+                </div>
+                <canvas id="interactiveCityMapCanvas" width="550" height="400" style="width: 100%; height: 100%; min-height: 380px; display: block; background: #070a13; flex-grow: 1;"></canvas>
+              </div>
+            </div>
+
+            <div class="map-detail-sidebar" style="display:flex; flex-direction:column; gap:16px;">
+              <div class="glass-card" id="mapLocationDetailCard" style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:24px;">
+                <svg viewBox="0 0 24 24" style="width:48px; height:48px; stroke:var(--heritage-gold); fill:none; stroke-width:1.5; margin-bottom:12px;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                <h4 style="font-family:var(--font-title); color:var(--light-gold); font-size:16px;">Select a Pin on the Map</h4>
+                <p style="font-size:12.5px; color:var(--text-secondary); line-height:1.6; margin-top:8px;">Click any location marker on the city map grid to view premium heritage guides, transit timings, and user review boards.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 11: PERSONALIZED ITINERARY PLANNER -->
+        <section class="tab-pane" id="pane-planner">
+          <div class="page-title-block">
+            <h2 id="plannerTitle">Plan My <span>Hyderabad Day</span></h2>
+            <p id="plannerSubTitle">Generate a smart, optimized route timeline based on your starting point, budget, and interests.</p>
+          </div>
+
+          <div class="grid-dash">
+            <div class="glass-card">
+              <div class="glass-card-header">
+                <h3><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg> Build Custom Itinerary</h3>
+              </div>
+              <form id="itineraryPlannerForm" onsubmit="generateItinerary(event)">
+                <div class="grid-2">
+                  <div class="form-group">
+                    <label for="plannerStart">Starting Hub</label>
+                    <select id="plannerStart" class="form-control" required>
+                      <option value="HITEC City" selected>Cyberabad (HITEC City)</option>
+                      <option value="Old City">Old City (Charminar Lane)</option>
+                      <option value="Secunderabad">Secunderabad Junction</option>
+                      <option value="Banjara Hills">Banjara Hills / Jubilee Hills</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="plannerBudget">Target Budget</label>
+                    <select id="plannerBudget" class="form-control" required>
+                      <option value="0" selected>Budget Explorer (₹0 - ₹200)</option>
+                      <option value="1">Nagarik Cruiser (₹200 - ₹1,000)</option>
+                      <option value="2">Nizami Royal Luxury (₹1,000+)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="grid-2">
+                  <div class="form-group">
+                    <label for="plannerHours">Available Duration (Hours)</label>
+                    <input type="range" id="plannerHours" min="4" max="12" step="2" value="8" oninput="document.getElementById('hoursValText').textContent = this.value + ' Hours'" style="width:100%; accent-color:var(--heritage-gold); margin-top:10px;">
+                    <span id="hoursValText" style="font-size:12px; color:var(--light-gold); font-weight:bold; margin-top:4px; display:block;">8 Hours</span>
+                  </div>
+                  <div class="form-group">
+                    <label>Interests</label>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;">
+                      <label class="check-pill"><input type="checkbox" name="plannerInterests" value="History" checked> History</label>
+                      <label class="check-pill"><input type="checkbox" name="plannerInterests" value="Food" checked> Food</label>
+                      <label class="check-pill"><input type="checkbox" name="plannerInterests" value="Shopping"> Shopping</label>
+                      <label class="check-pill"><input type="checkbox" name="plannerInterests" value="Nature"> Nature</label>
+                      <label class="check-pill"><input type="checkbox" name="plannerInterests" value="Entertainment"> Shows</label>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%; justify-content:center; margin-top:10px;">
+                  Generate Smart Itinerary Timeline
+                </button>
+              </form>
+            </div>
+
+            <div class="glass-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+              <div id="plannerResultsSidebar">
+                <div class="glass-card-header">
+                  <h3>Itinerary Summary</h3>
+                </div>
+                <div style="text-align:center; padding:20px; color:var(--text-muted);">
+                  <svg viewBox="0 0 24 24" style="width:40px; height:40px; stroke:currentColor; fill:none; stroke-width:1.5; margin-bottom:8px;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  <p style="font-size:12px;">Fill out the builder form and click generate to compute Nizami routes!</p>
+                </div>
+              </div>
+              <div id="plannerAddAllBlock" style="display:none; border-top:1px solid rgba(255,255,255,0.05); padding-top:14px; margin-top:10px;">
+                <button class="btn-primary" style="width:100%; justify-content:center;" onclick="addAllItineraryToCart()">Add All Passes to Booking Cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card" style="margin-top:24px; display:none;" id="itineraryTimelineSection">
+            <div class="glass-card-header">
+              <h3><svg viewBox="0 0 24 24"><path d="M12 8v4l3 3"/></svg> Your Customized Day Timeline</h3>
+            </div>
+            <div class="itinerary-timeline-flow" id="itineraryTimelineFlowContainer" style="position:relative; padding:20px 0;">
+              <!-- Timeline nodes -->
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 12: CURATED LOCAL EXPERIENCES -->
+        <section class="tab-pane" id="pane-experiences">
+          <div class="page-title-block">
+            <h2 id="discoverTitle">Discover <span>Curated Experiences</span></h2>
+            <p id="discoverSubTitle">Curated Heritage walks, famous food crawlers, cultural festivals, and Deccan gems.</p>
+          </div>
+
+          <div class="experiences-category-row" style="display:flex; gap:10px; margin-bottom:24px; overflow-x:auto; padding-bottom:6px;">
+            <button class="showtime-pill active" onclick="filterExperiences('all')">All Curated Trails</button>
+            <button class="showtime-pill" onclick="filterExperiences('Heritage')">Heritage Walks</button>
+            <button class="showtime-pill" onclick="filterExperiences('Food')">Food Trails</button>
+            <button class="showtime-pill" onclick="filterExperiences('Festivals')">Festivals & Art</button>
+            <button class="showtime-pill" onclick="filterExperiences('Nature')">Nature & Gems</button>
+          </div>
+
+          <div class="grid-3" id="experiencesGridContainer">
+            <!-- Curated cards generated by app.js -->
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- CHECKOUT / PASS BOOKING MODAL -->
+    <div class="modal-overlay" id="checkoutModalOverlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="checkoutModalTitle">Book Entry Ticket</h3>
+          <button class="modal-close-btn" onclick="closeCheckoutModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="checkoutBookingForm" onsubmit="processPassBooking(event)">
+            <input type="hidden" id="checkoutPassItem">
+            <input type="hidden" id="checkoutPassPrice">
+            
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="checkoutVisitorName">Visitor Name</label>
+                <input type="text" id="checkoutVisitorName" class="form-control" placeholder="E.g., Aditi Sharma" required>
+              </div>
+              <div class="form-group">
+                <label for="checkoutVisitDate">Visit/Reservation Date</label>
+                <input type="date" id="checkoutVisitDate" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group" id="checkoutQtyBlock">
+                <label for="checkoutVisitorQty">Number of Passes / Seats</label>
+                <input type="number" id="checkoutVisitorQty" class="form-control" min="1" max="10" value="1" oninput="updateCheckoutPrice()" required>
+              </div>
+              <div class="form-group" id="checkoutTimeBlock">
+                <label for="checkoutTimeSlot">Preferred Time Slot</label>
+                <select id="checkoutTimeSlot" class="form-control">
+                  <option value="Morning (09:00 AM - 12:00 PM)">Morning (09:00 AM)</option>
+                  <option value="Afternoon (12:00 PM - 03:00 PM)">Afternoon (12:00 PM)</option>
+                  <option value="Evening (03:00 PM - 06:00 PM)" selected>Evening (03:00 PM)</option>
+                  <option value="Night (06:00 PM - 09:00 PM)">Night (06:00 PM)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="glass-card" style="padding: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span class="ticket-label">Total Reservation Cost</span>
+                <span style="font-size: 11px; display: block; color: var(--text-secondary);" id="checkoutBreakdownTxt">Pass: ₹50 x 1</span>
+              </div>
+              <h3 style="font-size: 24px; font-family: var(--font-title); color: var(--heritage-gold);" id="checkoutTotalPrice">₹50</h3>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Generate Heritage Ticket & Confirm</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- TICKET CONFIRMATION / PRINT MODAL -->
+    <div class="modal-overlay" id="ticketResultModalOverlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Your Virtual Pass Issued</h3>
+          <button class="modal-close-btn" onclick="closeTicketResultModal()">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 16px;">
+          <div class="ticket-blueprint" id="printTicketBlueprint">
+            <div class="ticket-header">
+              <div class="ticket-logo">HYDERABAD 360</div>
+              <div class="timeline-year" id="resTicketType">Heritage Pass</div>
+            </div>
+            
+            <div class="ticket-row">
+              <div>
+                <span class="ticket-label">Issued To</span>
+                <div class="ticket-value" id="resTicketName">Aditi Sharma</div>
+              </div>
+              <div style="text-align: right;">
+                <span class="ticket-label">Booking ID</span>
+                <div class="ticket-value" style="font-family: monospace;" id="resTicketId">HYD-9843-TG</div>
+              </div>
+            </div>
+
+            <div class="ticket-row">
+              <div>
+                <span class="ticket-label">Activity / Place</span>
+                <div class="ticket-value" id="resTicketItem">Charminar Monument Entry</div>
+              </div>
+              <div style="text-align: right;">
+                <span class="ticket-label">Date & Time</span>
+                <div class="ticket-value" id="resTicketDateTime">2026-06-05 | 03:00 PM</div>
+              </div>
+            </div>
+
+            <div class="ticket-row">
+              <div>
+                <span class="ticket-label">Quantity / Spots</span>
+                <div class="ticket-value" id="resTicketQty">2 Guests</div>
+              </div>
+              <div style="text-align: right;">
+                <span class="ticket-label">Amount Paid</span>
+                <div class="ticket-value" style="color: var(--primary-teal);" id="resTicketCost">₹100.00</div>
+              </div>
+            </div>
+
+            <div class="ticket-qr-block">
+              <div>
+                <span class="ticket-label">Verification Scan</span>
+                <span style="font-size: 11px; display: block; color: #4b5563;">Official Entry Authorized</span>
+              </div>
+              <div class="ticket-qr-code-box">
+                <!-- Generated QR Canvas -->
+                <canvas class="ticket-barcode-canvas" id="ticketQrCanvas"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 12px; margin-top: 20px;">
+            <button class="btn-primary" style="flex-grow: 1; justify-content: center;" onclick="printIssuedTicket()">Print / Save PDF</button>
+            <button class="btn-secondary" style="flex-grow: 1; justify-content: center;" onclick="closeTicketResultModal()">Back to Dashboard</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOVIE CINEMA BOOKING MODAL -->
+    <div class="modal-overlay" id="cinemaModalOverlay">
+      <div class="modal-card" style="max-width: 580px;">
+        <div class="modal-header">
+          <h3 id="cinemaModalTitle">Prasad's IMAX - Movie Booking</h3>
+          <button class="modal-close-btn" onclick="closeCinemaModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="seat-booking-layout">
+            <div>
+              <div class="theater-screen">IMAX PROJECTOR SCREEN</div>
+              
+              <div class="seat-grid-container" id="cinemaSeatGrid">
+                <!-- 60 Seat boxes populated by app.js -->
+              </div>
+              
+              <div class="seat-legend-row">
+                <div class="legend-item"><div class="cinema-seat" style="width: 14px; height: 14px; cursor: default;"></div> Available</div>
+                <div class="legend-item"><div class="cinema-seat selected" style="width: 14px; height: 14px; cursor: default;"></div> Selected</div>
+                <div class="legend-item"><div class="cinema-seat occupied" style="width: 14px; height: 14px; cursor: default;"></div> Booked</div>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; justify-content: space-between; border-left: 1px solid rgba(255,255,255,0.05); padding-left: 18px;">
+              <div>
+                <span class="ticket-label" style="display: block; margin-bottom: 6px;">Movie & Timing</span>
+                <span style="font-size: 15px; font-weight: 700; color: var(--light-gold);" id="cinemaSelectedShow">Major Action Film</span>
+                <span style="font-size: 12px; color: var(--text-secondary); display: block; margin-top: 4px;" id="cinemaSelectedTime">Today | 06:45 PM</span>
+                
+                <div style="margin-top: 18px;">
+                  <span class="ticket-label" style="display: block; margin-bottom: 6px;">Selected Seats</span>
+                  <span style="font-size: 14px; font-weight: 600; font-family: monospace;" id="cinemaSelectedSeatsTxt">None Selected</span>
+                </div>
+              </div>
+
+              <div>
+                <div class="glass-card" style="padding: 12px; margin-bottom: 14px; border-color: rgba(255,255,255,0.06);">
+                  <span class="ticket-label" style="font-size: 9px;">Calculated Price</span>
+                  <h4 style="font-size: 20px; font-family: var(--font-title); color: var(--heritage-gold);" id="cinemaTotalPrice">₹0</h4>
+                </div>
+                <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="confirmCinemaSeatsBooking()">Confirm Seats Reservation</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOCK POLICE COMPLAINT REDIRECTION TERMINAL SIM MODAL -->
+    <div class="redirection-terminal" id="policeRedirectionOverlay">
+      <div class="terminal-box">
+        <div class="terminal-header">
+          <span>HYDERABAD POLICE COMMISSIONERATE DISPATCH</span>
+          <span style="color: #ff0000; animation: pulse-crimson 1.5s infinite;">● LIVE CONNECTION</span>
+        </div>
+        <div class="terminal-body" id="policeTerminalOutput">
+          <!-- Text printed letter-by-letter via JS -->
+        </div>
+        <div style="margin-top: 18px; display: flex; justify-content: flex-end;">
+          <button class="btn-secondary" id="terminateTerminalBtn" style="border-color: #ff0000; color: #ff0000; display: none;" onclick="closePoliceTerminalSim()">Abort Redirection</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MY BOOKINGS SLIDING PANEL -->
+    <div class="my-bookings-panel" id="myBookingsPanel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px;">
+        <h3 style="font-family: var(--font-title); font-size: 20px; color: var(--light-gold);">My Reservations</h3>
+        <button class="modal-close-btn" id="closeBookingsPanelBtn">&times;</button>
+      </div>
+      
+      <!-- List container -->
+      <div class="my-bookings-list" id="myBookingsListContainer">
+        <!-- Passes/complaints listed by app.js -->
+        <p style="color: var(--text-muted); font-size: 13px; text-align: center; margin-top: 40px;">No reservations found. Open tourist landmarks or restaurants to book your passes.</p>
+      </div>
+    </div>
+
+    <!-- UNIFIED SHOPPING CART PANEL -->
+    <div class="my-bookings-panel" id="cartPanel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px;">
+        <h3 style="font-family: var(--font-title); font-size: 20px; color: var(--light-gold);">Unified Booking Cart</h3>
+        <button class="modal-close-btn" id="closeCartPanelBtn">&times;</button>
+      </div>
+      <div class="my-bookings-list" id="cartItemsListContainer">
+        <!-- Shopping cart items populated dynamically -->
+        <p style="color: var(--text-muted); font-size: 13px; text-align: center; margin-top: 40px;">Your cart is empty. Explore tourist landmarks or dining spots to add booking items!</p>
+      </div>
+      <div class="cart-summary-block" id="cartSummaryBlock" style="display: none; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; margin-top: auto;">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px;">
+          <span>Items Subtotal</span>
+          <span id="cartSubtotalVal">₹0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+          <span>Nizami Heritage Cess (5%)</span>
+          <span id="cartCessVal">₹0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 16px; font-family: var(--font-title); font-weight: 700; color: var(--heritage-gold); margin-bottom: 16px;">
+          <span>Grand Total</span>
+          <span id="cartTotalVal">₹0</span>
+        </div>
+        <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="checkoutUnifiedCart()">Confirm Unified Checkout</button>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS SLIDING PANEL -->
+    <div class="my-bookings-panel" id="notificationsPanel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px;">
+        <h3 style="font-family: var(--font-title); font-size: 20px; color: var(--light-gold);">Smart City Alerts</h3>
+        <button class="modal-close-btn" id="closeNotificationsPanelBtn">&times;</button>
+      </div>
+      <div class="my-bookings-list" id="notificationsListContainer">
+        <!-- Active alert list generated dynamically -->
+      </div>
+    </div>
+
+    <!-- AI CHATBOT FLOATING WINDOW & TOGGLE -->
+    <button class="chatbot-floater-btn" id="chatbotToggleBtn" title="Ask Hyderabad Guide">
+      <span class="chatbot-status-dot"></span>
+      <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" fill="none"/></svg>
+    </button>
+
+    <div class="chatbot-window glass-card" id="chatbotWindow">
+      <div class="chatbot-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="chatbot-avatar">HG</div>
+          <div>
+            <h4 style="font-size: 14px; font-family: var(--font-title); color: var(--light-gold);">Hyderabad Guide</h4>
+            <span style="font-size: 10px; color: var(--accent-emerald);">● AI Assistant Online</span>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="closeChatbotBtn" style="font-size: 20px;">&times;</button>
+      </div>
+      <div class="chatbot-body" id="chatbotMessages">
+        <div class="chat-msg bot">
+          Namaste! I am the **Hyderabad Guide**, your smart city assistant. How can I help you explore Hyderabad today? Ask me about historic sights, famous biryani spots, transport guidance, or plan a custom day!
+        </div>
+        <div class="chat-suggested-prompts" id="chatbotPromptsBox">
+          <span class="chat-prompt-chip" onclick="handleChatPrompt('Recommend a classic 1-day historical tour')">1-Day History Tour</span>
+          <span class="chat-prompt-chip" onclick="handleChatPrompt('Where can I get the best authentic Irani Chai?')">Best Irani Chai</span>
+          <span class="chat-prompt-chip" onclick="handleChatPrompt('How does the Metro Line ticketing work?')">Metro Rail Guide</span>
+          <span class="chat-prompt-chip" onclick="handleChatPrompt('What are some hidden gems in the Deccan?')">Hidden Gems</span>
+        </div>
+      </div>
+      <div class="chatbot-footer">
+        <input type="text" placeholder="Type a message..." id="chatbotInput">
+        <button class="btn-primary" id="chatbotSendBtn" style="padding: 8px 12px; border-radius: var(--radius-sm);">Send</button>
+      </div>
+    </div>
+
+    <!-- AUTHENTICATION (LOGIN/SIGNUP) MODAL -->
+    <div class="modal-overlay" id="authModalOverlay">
+      <div class="modal-card" style="max-width: 400px; padding: 24px;">
+        <div class="modal-header" style="margin-bottom: 16px; border-bottom: none; padding-bottom: 0;">
+          <h3 id="authModalTitle" style="font-family: var(--font-title); font-size: 20px; color: var(--light-gold);">Access Hyderabad 360</h3>
+          <button class="modal-close-btn" id="closeAuthModalBtn" style="font-size: 24px;">&times;</button>
+        </div>
+        
+        <!-- Tab Selectors for Login vs Signup -->
+        <div style="display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+          <button class="showtime-pill active" id="authTabLogin" style="flex:1; justify-content:center;">Login</button>
+          <button class="showtime-pill" id="authTabSignup" style="flex:1; justify-content:center;">Register</button>
+        </div>
+
+        <div class="modal-body" style="padding: 0;">
+          <!-- Auth Form -->
+          <form id="authForm" onsubmit="handleAuthSubmit(event)">
+            <!-- Dynamic field for Email (hidden in Login, shown in Signup) -->
+            <div class="form-group" id="authEmailGroup" style="display: none; margin-bottom: 12px;">
+              <label for="authEmail" style="font-size: 11px; text-transform: uppercase; color: var(--heritage-gold); font-weight: 600;">Email Address</label>
+              <input type="email" id="authEmail" class="form-control" placeholder="E.g., commuter@example.com" style="width: 100%;">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="authUsername" id="authUsernameLabel" style="font-size: 11px; text-transform: uppercase; color: var(--heritage-gold); font-weight: 600;">Username / Email</label>
+              <input type="text" id="authUsername" class="form-control" placeholder="E.g., commuter123" required style="width: 100%;">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="authPassword" style="font-size: 11px; text-transform: uppercase; color: var(--heritage-gold); font-weight: 600;">Password</label>
+              <input type="password" id="authPassword" class="form-control" placeholder="••••••••" required style="width: 100%;">
+            </div>
+
+            <!-- Error message feedback -->
+            <div id="authErrorAlert" style="display: none; background: rgba(239,68,68,0.1); border: 1px solid var(--safety-crimson); color: #fca5a5; font-size: 12px; padding: 10px; border-radius: var(--radius-sm); margin-bottom: 16px; line-height: 1.4;">
+              Invalid credentials.
+            </div>
+
+            <button type="submit" class="btn-primary" id="authSubmitBtn" style="width: 100%; justify-content: center; height: 38px; font-weight: bold;">
+              Sign In to City Portal
+            </button>
+          </form>
+
+          <!-- Divider -->
+          <div style="display:flex; align-items:center; gap:10px; margin: 18px 0; color:var(--text-muted); font-size:11px;">
+            <div style="flex:1; border-top: 1px solid rgba(255,255,255,0.06);"></div>
+            <span>OR</span>
+            <div style="flex:1; border-top: 1px solid rgba(255,255,255,0.06);"></div>
+          </div>
+
+          <!-- Continue with Google Button -->
+          <button class="btn-secondary" id="authGoogleBtn" style="width: 100%; justify-content: center; gap: 10px; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); height: 38px; color: var(--text-primary);">
+            <!-- Google Colored Icon Logo -->
+            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px;">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+            </svg>
+            <span style="font-weight: 600;">Continue with Google</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GOOGLE AUTH POPUP SIMULATION MODAL -->
+    <div class="modal-overlay" id="googleAuthPopupOverlay" style="z-index: 999; background: rgba(0,0,0,0.85);">
+      <div class="modal-card" style="max-width: 360px; padding: 24px; border-radius: 8px; background: #ffffff; color: #1f2937; border: 1px solid #e5e7eb; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <!-- Google colored logo -->
+          <svg viewBox="0 0 24 24" style="width: 40px; height: 40px; margin: 0 auto 10px auto;">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+          </svg>
+          <h3 style="font-size: 17px; font-weight: 700; color: #111827; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin-bottom: 4px;">Sign in with Google</h3>
+          <p style="font-size: 12.5px; color: #4b5563; line-height: 1.4;">Choose an account to continue to <strong>Hyderabad 360</strong></p>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;" id="googleAccountsList">
+          <!-- Mock accounts list -->
+          <div class="google-mock-account-row" onclick="selectGoogleAccount('Aditi Sharma', 'aditi.sharma@gmail.com', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&h=80&q=80')" style="display:flex; align-items:center; gap:12px; padding:10px; border:1px solid #e5e7eb; border-radius:6px; cursor:pointer; transition: background 0.2s;">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&h=80&q=80" style="width:32px; height:32px; border-radius:50%; border:1px solid #e5e7eb; object-fit: cover;">
+            <div style="text-align:left;">
+              <div style="font-size: 13px; font-weight:600; color:#111827; line-height: 1.2;">Aditi Sharma</div>
+              <div style="font-size: 11px; color:#6b7280; margin-top:2px;">aditi.sharma@gmail.com</div>
+            </div>
+          </div>
+          
+          <div class="google-mock-account-row" onclick="selectGoogleAccount('Rajesh Kumar', 'rajesh.hitech@gmail.com', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80')" style="display:flex; align-items:center; gap:12px; padding:10px; border:1px solid #e5e7eb; border-radius:6px; cursor:pointer; transition: background 0.2s;">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80" style="width:32px; height:32px; border-radius:50%; border:1px solid #e5e7eb; object-fit: cover;">
+            <div style="text-align:left;">
+              <div style="font-size: 13px; font-weight:600; color:#111827; line-height: 1.2;">Rajesh Kumar</div>
+              <div style="font-size: 11px; color:#6b7280; margin-top:2px;">rajesh.hitech@gmail.com</div>
+            </div>
+          </div>
+
+          <div class="google-mock-account-row" onclick="selectGoogleAccount('Nikhil Nizam', 'nikhil.nizam@gmail.com', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&h=80&q=80')" style="display:flex; align-items:center; gap:12px; padding:10px; border:1px solid #e5e7eb; border-radius:6px; cursor:pointer; transition: background 0.2s;">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&h=80&q=80" style="width:32px; height:32px; border-radius:50%; border:1px solid #e5e7eb; object-fit: cover;">
+            <div style="text-align:left;">
+              <div style="font-size: 13px; font-weight:600; color:#111827; line-height: 1.2;">Nikhil Nizam</div>
+              <div style="font-size: 11px; color:#6b7280; margin-top:2px;">nikhil.nizam@gmail.com</div>
+            </div>
+          </div>
+
+          <!-- Use another account -->
+          <div class="google-mock-account-row" onclick="selectGoogleCustomAccount()" style="display:flex; align-items:center; gap:12px; padding:10px; border:1px solid #e5e7eb; border-radius:6px; cursor:pointer; transition: background 0.2s; background:#f9fafb;">
+            <div style="width:32px; height:32px; border-radius:50%; border:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center; background:#e5e7eb; color:#4b5563;">
+              <svg viewBox="0 0 24 24" style="width:16px; height:16px; stroke:currentColor; stroke-width:2.5; fill:none;"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div style="text-align:left;">
+              <div style="font-size: 13px; font-weight:600; color:#4b5563;">Use another account</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="googleCustomAccountInputBlock" style="display:none; margin-top:14px; text-align:left;">
+          <label style="font-size: 11px; color:#4b5563; font-weight:600; display:block; margin-bottom:4px;">Full Name</label>
+          <input type="text" id="googleCustomName" placeholder="Full Name" style="width:100%; padding:8px; border:1px solid #d1d5db; border-radius:6px; font-size:13px; margin-bottom:8px;" required>
+          
+          <label style="font-size: 11px; color:#4b5563; font-weight:600; display:block; margin-bottom:4px;">Google Email</label>
+          <input type="email" id="googleCustomEmail" placeholder="email@gmail.com" style="width:100%; padding:8px; border:1px solid #d1d5db; border-radius:6px; font-size:13px; margin-bottom:12px;" required>
+          
+          <div style="display:flex; gap:8px;">
+            <button class="btn-primary" onclick="submitGoogleCustomAccount()" style="flex:1; justify-content:center; background:#4285F4; border-color:#4285F4; height:32px; font-size:12.5px; padding:0; color:white;">Sign In</button>
+            <button class="btn-secondary" onclick="cancelGoogleCustomAccount()" style="flex:1; justify-content:center; height:32px; font-size:12.5px; padding:0; border-color:#d1d5db; color:#4b5563;">Back</button>
+          </div>
+        </div>
+
+        <div style="margin-top:20px; border-top:1px solid #f3f4f6; padding-top:12px; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#6b7280; font-family: -apple-system, BlinkMacSystemFont, sans-serif;">
+          <span>English (United States)</span>
+          <button onclick="closeGoogleAuthPopup()" style="background:transparent; border:none; color:#dc2626; cursor:pointer; font-weight:600;">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VOICE SEARCH DIALOG MODAL -->
+    <div class="modal-overlay" id="voiceSearchModalOverlay">
+      <div class="modal-card" style="max-width: 320px; text-align: center; padding: 24px;">
+        <h3 style="font-family: var(--font-title); color: var(--light-gold); font-size: 18px; margin-bottom: 14px;">Voice Command Search</h3>
+        <div class="voice-search-mic-pulse" id="voiceSearchPulseRing">
+          <svg viewBox="0 0 24 24" style="width: 36px; height: 36px; stroke: white; fill: none; stroke-width: 2;"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1M12 19v4M8 23h8"/></svg>
+        </div>
+        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 18px; font-weight: 500;" id="voiceSearchStatusText">Listening...</p>
+        <button class="btn-secondary" style="margin-top: 20px; width: 100%; justify-content: center;" onclick="closeVoiceSearch()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CORNER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

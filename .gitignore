@@ -1,0 +1,11 @@
+# Exclude active SQLite database files
+data/*.db
+data/*.db-journal
+
+# Exclude legacy JSON backups
+data/*.json.bak
+
+# Exclude IDE and system generated logs
+.system_generated/
+.DS_Store
+Thumbs.db
