@@ -7,7 +7,7 @@ import urllib.error
 import traceback
 import sqlite3
 
-PORT = 8000
+PORT = int(os.environ.get("PORT", 8000))
 DATA_DIR = "./data"
 BOOKINGS_FILE = os.path.join(DATA_DIR, "bookings.json")
 COMPLAINTS_FILE = os.path.join(DATA_DIR, "complaints.json")
