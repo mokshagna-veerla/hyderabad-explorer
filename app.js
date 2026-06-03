@@ -2652,6 +2652,25 @@ function initAuthSystem() {
       localStorage.removeItem("currentUser");
     }
   }
+
+  // Handle Google OAuth callback redirect parameters
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("login_success") === "true") {
+    const username = params.get("username");
+    const email = params.get("email");
+    const avatarUrl = params.get("avatar_url");
+    if (username) {
+      applyLoginSession({ username, email, isGoogle: true, avatarUrl });
+      showToast(`Connected with Google! Welcome, ${username}!`);
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
+  } else if (params.get("login_error")) {
+    const errorMsg = params.get("login_error");
+    showToast(`Google Sign-In failed: ${errorMsg}`, "error");
+    const cleanUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
+  }
 }
 
 function showAuthModal(tab = 'login') {
@@ -2790,8 +2809,7 @@ function handleLogout() {
 /* Simulated Google Popup Handlers */
 function openGoogleAuthPopup() {
   hideAuthModal();
-  const overlay = document.getElementById("googleAuthPopupOverlay");
-  if (overlay) overlay.style.display = "flex";
+  window.location.href = "/api/google/login";
 }
 
 function closeGoogleAuthPopup() {

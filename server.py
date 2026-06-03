@@ -4,10 +4,13 @@ import json
 import os
 import urllib.request
 import urllib.error
+import urllib.parse
 import traceback
 import sqlite3
 
 PORT = int(os.environ.get("PORT", 8000))
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
 DATA_DIR = "/data" if os.environ.get("RENDER") or os.path.isdir("/data") else "./data"
 BOOKINGS_FILE = os.path.join(DATA_DIR, "bookings.json")
 COMPLAINTS_FILE = os.path.join(DATA_DIR, "complaints.json")
@@ -197,7 +200,11 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         print(f"do_GET: {self.path}")
         try:
-            if self.path == "/api/weather":
+            if self.path.startswith("/api/google/login"):
+                self.handle_google_login()
+            elif self.path.startswith("/api/google/callback"):
+                self.handle_google_callback()
+            elif self.path == "/api/weather":
                 self.handle_get_weather()
             elif self.path == "/api/bookings":
                 self.handle_get_bookings()
@@ -573,6 +580,258 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         except Exception as e:
             print(f"Error in handle_post_login: {e}")
             self.send_error_response("Database error", 500)
+
+    def serve_config_error(self, message):
+        html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google OAuth Setup Required</title>
+    <style>
+        body {{
+            background: #070a13;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }}
+        .card {{
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }}
+        h1 {{
+            color: #d4af37;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }}
+        p {{
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+        }}
+        .code-block {{
+            background: #020617;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            color: #38bdf8;
+            text-align: left;
+            margin: 24px 0;
+            overflow-x: auto;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }}
+        .btn {{
+            display: inline-block;
+            background: linear-gradient(135deg, #d4af37, #b59023);
+            color: #070a13;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }}
+        .btn:hover {{
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Google OAuth Credentials Required</h1>
+        <p>{message}</p>
+        <div class="code-block">
+            # Please set these environment variables before running the server:<br>
+            $env:GOOGLE_CLIENT_ID="your_client_id"<br>
+            $env:GOOGLE_CLIENT_SECRET="your_client_secret"
+        </div>
+        <p>Or configure them on your deployment dashboard (e.g. Render, Heroku).</p>
+        <a href="/" class="btn">Return to Hyderabad 360</a>
+    </div>
+</body>
+</html>"""
+        content = html.encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(content)))
+        self.end_headers()
+        self.wfile.write(content)
+
+    def handle_google_login(self):
+        if not GOOGLE_CLIENT_ID or not GOOGLE_CLIENT_SECRET:
+            self.serve_config_error("Google client credentials are not configured in environment variables.")
+            return
+
+        host = self.headers.get("Host", "localhost:8000")
+        proto = self.headers.get("X-Forwarded-Proto")
+        if not proto:
+            proto = "http" if ("localhost" in host or "127.0.0.1" in host) else "https"
+        redirect_uri = f"{proto}://{host}/api/google/callback"
+
+        params = {
+            "client_id": GOOGLE_CLIENT_ID,
+            "redirect_uri": redirect_uri,
+            "response_type": "code",
+            "scope": "openid email profile",
+            "prompt": "select_account",
+            "state": "google_oauth_state"
+        }
+        auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?{urllib.parse.urlencode(params)}"
+        
+        self.send_response(302)
+        self.send_header("Location", auth_url)
+        self.end_headers()
+
+    def handle_google_callback(self):
+        if not GOOGLE_CLIENT_ID or not GOOGLE_CLIENT_SECRET:
+            self.serve_config_error("Google client credentials are not configured in environment variables.")
+            return
+
+        parsed_url = urllib.parse.urlsplit(self.path)
+        query_params = urllib.parse.parse_qs(parsed_url.query)
+        
+        code_list = query_params.get("code")
+        if not code_list:
+            self.send_response(302)
+            self.send_header("Location", "/index.html?login_error=Missing+authorization+code")
+            self.end_headers()
+            return
+            
+        code = code_list[0]
+
+        host = self.headers.get("Host", "localhost:8000")
+        proto = self.headers.get("X-Forwarded-Proto")
+        if not proto:
+            proto = "http" if ("localhost" in host or "127.0.0.1" in host) else "https"
+        redirect_uri = f"{proto}://{host}/api/google/callback"
+
+        # Exchange authorization code for token
+        token_url = "https://oauth2.googleapis.com/token"
+        post_data = urllib.parse.urlencode({
+            "code": code,
+            "client_id": GOOGLE_CLIENT_ID,
+            "client_secret": GOOGLE_CLIENT_SECRET,
+            "redirect_uri": redirect_uri,
+            "grant_type": "authorization_code"
+        }).encode("utf-8")
+        
+        try:
+            req = urllib.request.Request(
+                token_url,
+                data=post_data,
+                headers={"Content-Type": "application/x-www-form-urlencoded"}
+            )
+            with urllib.request.urlopen(req, timeout=10) as response:
+                token_res = json.loads(response.read().decode("utf-8"))
+        except Exception as e:
+            print(f"Token exchange failed: {e}")
+            self.send_response(302)
+            self.send_header("Location", "/index.html?login_error=Token+exchange+failed")
+            self.end_headers()
+            return
+            
+        access_token = token_res.get("access_token")
+        if not access_token:
+            self.send_response(302)
+            self.send_header("Location", "/index.html?login_error=No+access+token+received")
+            self.end_headers()
+            return
+
+        # Fetch user info
+        userinfo_url = "https://www.googleapis.com/oauth2/v3/userinfo"
+        try:
+            req = urllib.request.Request(
+                userinfo_url,
+                headers={"Authorization": f"Bearer {access_token}"}
+            )
+            with urllib.request.urlopen(req, timeout=10) as response:
+                user_info = json.loads(response.read().decode("utf-8"))
+        except Exception as e:
+            print(f"Failed to fetch Google userinfo: {e}")
+            self.send_response(302)
+            self.send_header("Location", "/index.html?login_error=Failed+to+retrieve+profile")
+            self.end_headers()
+            return
+
+        email = user_info.get("email", "").strip()
+        name = user_info.get("name", "").strip()
+        picture = user_info.get("picture", "").strip()
+        
+        if not email:
+            self.send_response(302)
+            self.send_header("Location", "/index.html?login_error=Email+not+provided+by+Google")
+            self.end_headers()
+            return
+
+        # SQLite storage logic
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            
+            # Look up by email
+            cursor.execute("SELECT username FROM users WHERE LOWER(email) = ?", (email.lower(),))
+            row = cursor.fetchone()
+            if row:
+                username = row["username"]
+                # Update Google status and avatar
+                cursor.execute(
+                    "UPDATE users SET is_google = 1, avatar_url = ? WHERE username = ?",
+                    (picture, username)
+                )
+            else:
+                # Generate unique username
+                # base_username should only contain valid characters
+                base_username = "".join(c for c in name if c.isalnum() or c in " _.-").strip().replace(" ", "_")
+                if not base_username:
+                    base_username = email.split("@")[0]
+                username = base_username
+                counter = 1
+                while True:
+                    cursor.execute("SELECT username FROM users WHERE LOWER(username) = ?", (username.lower(),))
+                    if not cursor.fetchone():
+                        break
+                    username = f"{base_username}_{counter}"
+                    counter += 1
+                
+                cursor.execute(
+                    "INSERT INTO users (username, email, password, is_google, avatar_url) VALUES (?, ?, ?, ?, ?)",
+                    (username, email, "", 1, picture)
+                )
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            print(f"Database operation failed for OAuth callback: {e}")
+            traceback.print_exc()
+            self.send_response(302)
+            self.send_header("Location", "/index.html?login_error=Database+registration+error")
+            self.end_headers()
+            return
+
+        # Redirect with details
+        params = {
+            "login_success": "true",
+            "username": username,
+            "email": email,
+            "avatar_url": picture
+        }
+        redirect_url = f"/index.html?{urllib.parse.urlencode(params)}"
+        self.send_response(302)
+        self.send_header("Location", redirect_url)
+        self.end_headers()
 
     # ==========================================================================
     # Helper Utilities
