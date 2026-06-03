@@ -3040,7 +3040,7 @@ window.trackGamyamBus = function() {
         <circle cx="50" cy="50" r="45" fill="none" stroke="var(--heritage-gold)" stroke-width="6"/>
         <path d="M35 50 L65 50 M50 35 L50 65" stroke="var(--heritage-gold)" stroke-width="10"/>
       </svg>
-      Connecting to TGSRTC Gamyam API...
+      Connecting to TGSRTC live bus locator network...
     </div>
   `;
 
@@ -3175,7 +3175,7 @@ window.trackMmtsTrain = function() {
         <circle cx="50" cy="50" r="45" fill="none" stroke="var(--accent-emerald)" stroke-width="6"/>
         <path d="M35 50 L65 50 M50 35 L50 65" stroke="var(--accent-emerald)" stroke-width="10"/>
       </svg>
-      Connecting to Where is My Train API...
+      Connecting to live South Central Railway network...
     </div>
   `;
 
