@@ -2330,11 +2330,12 @@ function changeAppLanguage(lang) {
 
   // Let's translate global navigation elements
   const tabTitles = {
-    en: ["Interactive Map", "Plan My Day", "Discover Hyderabad", "Dashboard", "Heritage & History", "Weather & Topography", "Tourist Landmarks", "Public Transit", "Gastronomy & Hotels", "Traffic Tracker", "Cinemas & Shows", "Nagarik Safety Portal"],
-    te: ["ఇంటరాక్టివ్ మ్యాప్", "నా రోజు ప్లాన్", "హైదరాబాద్ శోధన", "డ్యాష్‌బోర్డ్", "చరిత్ర & వారసత్వం", "వాతావరణం", "పర్యాటక ప్రదేశాలు", "రవాణా వ్యవస్థ", "హోటల్స్ & బిర్యానీ", "ట్రాఫిక్ వేగం", "సినిమాలు & ప్రదర్శనలు", "రక్షణ పోర్టల్"],
-    hi: ["मानचित्र", "मेरा दिन योजना", "हैदराबाद यात्रा", "डैशबोर्ड", "इतिहास और विरासत", "मौसम और भूगोल", "पर्यटन स्थल", "सार्वजनिक परिवहन", "होटल और भोजन", "यातायात ट्रैकर", "सिनेमा और शो", "सुरक्षा पोर्टल"],
-    ur: ["نقشہ", "میرا دن پلان", "حیدرآباد دریافت", "ڈیش بورڈ", "تاریخ و ثقافت", "موسم", "تفریحی مقامات", "پبلک ٹرانزٹ", "ہوٹل اور کھانے", "ٹریفک ٹریکر", "سنیما اور شو", "محفوظ پورٹل"]
+    en: ["Dashboard", "Interactive Map", "Plan My Day", "Discover Hyderabad", "Heritage & History", "Weather & Topography", "Tourist Landmarks", "Public Transit", "Gastronomy & Hotels", "Traffic Tracker", "Cinemas & Shows", "Nagarik Safety Portal", "City Administration"],
+    te: ["డ్యాష్‌బోర్డ్", "ఇంటరాక్టివ్ మ్యాప్", "నా రోజు ప్లాన్", "హైదరాబాద్ శోధన", "చరిత్ర & వారసత్వం", "వాతావరణం", "పర్యాటక ప్రదేశాలు", "రవాణా వ్యవస్థ", "హోటల్స్ & బిర్యానీ", "ట్రాఫిక్ వేగం", "సినిమాలు & ప్రదర్శనలు", "రక్షణ పోర్టల్", "నగర పరిపాలన"],
+    hi: ["डैशबोर्ड", "मानचित्र", "मेरा दिन योजना", "हैदराबाद यात्रा", "इतिहास और विरासत", "मौसम और भूगोल", "पर्यटन स्थल", "सार्वजनिक परिवहन", "होटल और भोजन", "यातायात ट्रैकर", "सिनेमा और शो", "सुरक्षा पोर्टल", "नगर प्रशासन"],
+    ur: ["ڈیش بورڈ", "نقشہ", "میرا دن پلان", "حیدرآباد دریافت", "تاریخ و ثقافت", "موسم", "تفریحی مقامات", "پبلک ٹرانزٹ", "ہوٹل اور کھانے", "ٹریفک ٹریکر", "سنیما اور شو", "محفوظ پورٹل", "شہری انتظامیہ"]
   };
+
 
   const currentTitlesList = tabTitles[lang] || tabTitles.en;
   const navButtons = document.querySelectorAll(".nav-item button");
