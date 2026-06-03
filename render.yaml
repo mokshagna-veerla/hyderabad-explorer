@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: hyderabad-explorer
+    env: python
+    buildCommand: "" # No extra pip packages needed as server uses built-in Python packages
+    startCommand: python server.py
+    disk:
+      name: data-volume
+      mountPath: /data
+      sizeGB: 1

@@ -8,7 +8,7 @@ import traceback
 import sqlite3
 
 PORT = int(os.environ.get("PORT", 8000))
-DATA_DIR = "./data"
+DATA_DIR = "/data" if os.environ.get("RENDER") or os.path.isdir("/data") else "./data"
 BOOKINGS_FILE = os.path.join(DATA_DIR, "bookings.json")
 COMPLAINTS_FILE = os.path.join(DATA_DIR, "complaints.json")
 REVIEWS_FILE = os.path.join(DATA_DIR, "reviews.json")
