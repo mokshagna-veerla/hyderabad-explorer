@@ -468,6 +468,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadDashboardMetroUpdates();
   loadExperiencesGrid();
   loadSmartNotifications();
+  initGlobalSearch();
 
   // Collapsible Sidebar Navigation Actions
   const sidebar = document.querySelector(".sidebar");
@@ -2861,4 +2862,169 @@ window.closeMetroMapModal = function() {
   const overlay = document.getElementById("metroMapModalOverlay");
   if (overlay) overlay.style.display = "none";
 };
+
+/* 14. Interactive Global Search Logic */
+function initGlobalSearch() {
+  const searchInput = document.getElementById("globalSearchInput");
+  const suggestionsBox = document.getElementById("globalSearchSuggestions");
+  if (!searchInput || !suggestionsBox) return;
+
+  searchInput.addEventListener("input", (e) => {
+    const query = e.target.value.trim().toLowerCase();
+    if (!query) {
+      suggestionsBox.style.display = "none";
+      suggestionsBox.innerHTML = "";
+      return;
+    }
+
+    const matches = MAP_LOCATIONS.filter(loc => 
+      loc.name.toLowerCase().includes(query) || 
+      (loc.desc && loc.desc.toLowerCase().includes(query))
+    ).slice(0, 5);
+
+    if (matches.length === 0) {
+      suggestionsBox.innerHTML = `
+        <div style="padding: 12px 16px; font-size: 12.5px; color: var(--text-secondary); text-align: center;">
+          No matches found for "${e.target.value}"
+        </div>
+      `;
+      suggestionsBox.style.display = "flex";
+      return;
+    }
+
+    suggestionsBox.innerHTML = matches.map(loc => {
+      const catClass = loc.category.toLowerCase();
+      return `
+        <div class="search-suggestion-item" data-name="${loc.name}" data-category="${loc.category}">
+          <div class="suggestion-header">
+            <span class="suggestion-name">${loc.name}</span>
+            <span class="suggestion-category ${catClass}">${loc.category}</span>
+          </div>
+          <p class="suggestion-desc">${loc.desc || ''}</p>
+        </div>
+      `;
+    }).join('');
+
+    suggestionsBox.style.display = "flex";
+
+    suggestionsBox.querySelectorAll(".search-suggestion-item").forEach(item => {
+      item.addEventListener("click", () => {
+        const name = item.getAttribute("data-name");
+        const category = item.getAttribute("data-category");
+        navigateToSearchSelection(name, category);
+        
+        searchInput.value = "";
+        suggestionsBox.style.display = "none";
+        suggestionsBox.innerHTML = "";
+      });
+    });
+  });
+
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const query = searchInput.value.trim().toLowerCase();
+      if (!query) return;
+
+      const firstMatch = MAP_LOCATIONS.find(loc => 
+        loc.name.toLowerCase().includes(query) || 
+        (loc.desc && loc.desc.toLowerCase().includes(query))
+      );
+
+      if (firstMatch) {
+        navigateToSearchSelection(firstMatch.name, firstMatch.category);
+        searchInput.value = "";
+        suggestionsBox.style.display = "none";
+      } else {
+        showToast(`No matches found for "${searchInput.value}"`, "error");
+      }
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    if (e.target !== searchInput && e.target !== suggestionsBox && !suggestionsBox.contains(e.target)) {
+      suggestionsBox.style.display = "none";
+    }
+  });
+}
+
+function navigateToSearchSelection(name, category) {
+  if (category === "Attractions") {
+    switchTab("tourist");
+    setTimeout(() => {
+      const cards = document.querySelectorAll(".tourist-grid-card");
+      cards.forEach(card => {
+        const h4 = card.querySelector("h4");
+        if (h4 && h4.textContent.toLowerCase().includes(name.toLowerCase().replace(" monument", "").replace(" fortress", "").replace(" temple", "").replace(" museum", ""))) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.style.borderColor = 'var(--heritage-gold)';
+          card.style.boxShadow = '0 0 25px var(--heritage-gold)';
+          setTimeout(() => {
+            card.style.borderColor = '';
+            card.style.boxShadow = '';
+          }, 3000);
+        }
+      });
+    }, 250);
+  } else if (category === "Metro") {
+    switchTab("transit");
+    setTimeout(() => {
+      const select = document.getElementById("tsavaariFromStation");
+      if (select) {
+        for (let opt of select.options) {
+          const normOpt = opt.text.toLowerCase().replace(" station", "").replace(" junction", "");
+          const normName = name.toLowerCase().replace(" hub", "").replace(" metro", "").replace(" transit", "");
+          if (normName.includes(normOpt) || normOpt.includes(normName)) {
+            select.value = opt.value;
+            select.dispatchEvent(new Event('change'));
+            break;
+          }
+        }
+      }
+      const portalCard = document.getElementById("tsavaariPortalCard");
+      if (portalCard) {
+        portalCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        portalCard.style.borderColor = 'var(--accent-emerald)';
+        portalCard.style.boxShadow = '0 0 25px rgba(16, 185, 129, 0.3)';
+        setTimeout(() => {
+          portalCard.style.borderColor = '';
+          portalCard.style.boxShadow = '';
+        }, 3000);
+      }
+    }, 250);
+  } else if (category === "Dining") {
+    switchTab("dining");
+    setTimeout(() => {
+      const diningCards = document.querySelectorAll(".dining-card");
+      diningCards.forEach(card => {
+        const h4 = card.querySelector("h4");
+        if (h4 && h4.textContent.toLowerCase().includes(name.toLowerCase().replace(" hub", "").replace(" hilltop", "").replace(" lakdikapul", ""))) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.style.borderColor = 'var(--heritage-gold)';
+          card.style.boxShadow = '0 0 25px var(--heritage-gold)';
+          setTimeout(() => {
+            card.style.borderColor = '';
+            card.style.boxShadow = '';
+          }, 3000);
+        }
+      });
+    }, 250);
+  } else if (category === "Safety") {
+    switchTab("safety");
+    setTimeout(() => {
+      const form = document.getElementById("policeComplaintForm");
+      if (form) {
+        const card = form.closest(".glass-card");
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.style.borderColor = 'var(--safety-crimson)';
+          card.style.boxShadow = '0 0 25px rgba(239, 68, 68, 0.4)';
+          setTimeout(() => {
+            card.style.borderColor = '';
+            card.style.boxShadow = '';
+          }, 3000);
+        }
+      }
+    }, 250);
+  }
+}
 
