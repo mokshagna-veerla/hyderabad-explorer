@@ -731,6 +731,73 @@
                     Select start and destination stations to pull real-time TSavaari route parameters.
                   </div>
                 </div>
+            </div>
+
+            <!-- TGSRTC & MMTS SUB-URBAN TRANSIT PORTAL -->
+            <div style="margin-top: 32px; border-top: 1px dashed rgba(212,175,55,0.15); padding-top: 24px;">
+              <h3 style="font-family: var(--font-title); font-size: 18px; font-weight: 700; color: var(--heritage-gold); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                <svg viewBox="0 0 24 24" style="stroke:currentColor; fill:none; stroke-width:2; width:18px; height:18px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M6 21H3v-4h18v4h-3"/></svg>
+                TGSRTC Bus Feed & MMTS Commuter Board
+              </h3>
+              
+              <div class="grid-2">
+                <!-- TGSRTC GAMYAM BUS TRACKER -->
+                <div class="glass-card">
+                  <div class="glass-card-header" style="margin-bottom:12px; padding-bottom:8px;">
+                    <h3>
+                      <svg viewBox="0 0 24 24" style="stroke:var(--heritage-gold); fill:none; stroke-width:2; width:18px; height:18px;"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><path d="M6 20h12M12 9v11"/></svg>
+                      <span>TGSRTC Gamyam - Live Bus Tracker</span>
+                    </h3>
+                    <span class="suggestion-category" style="background: rgba(212,175,55,0.15); color: var(--heritage-gold); font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: var(--radius-sm);">Gamyam API</span>
+                  </div>
+                  <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5;">
+                    Track local transit routes and exact timing intervals. Fetches bus coordinates from the TGSRTC Gamyam live tracking network.
+                  </p>
+                  <div class="form-group">
+                    <label style="font-size: 11px; text-transform: uppercase; color: var(--heritage-gold); font-weight: 600; display:block; margin-bottom:6px;">Select Bus Route Number</label>
+                    <select class="form-control" id="gamyamBusRoute" onchange="trackGamyamBus()">
+                      <option value="" disabled selected>Select route...</option>
+                      <option value="127K">127K: Koti ⇄ Kondapur (via Lakdikapul, Ameerpet, Hitec City)</option>
+                      <option value="218">218: Koti ⇄ Patancheru (via Ameerpet, Kukatpally, Miyapur)</option>
+                      <option value="10H">10H: Secunderabad ⇄ Kondapur (via Begumpet, Hitec City)</option>
+                      <option value="9F">9F: Secunderabad ⇄ Koti (via RTC X Roads)</option>
+                      <option value="229">229: Secunderabad ⇄ Medchal (via Suchitra, Kompally)</option>
+                    </select>
+                  </div>
+                  <div id="gamyamResultsContainer" class="transit-results-box" style="margin-top: 16px;">
+                    <div style="font-size: 12.5px; color: var(--text-muted); text-align: center; padding: 20px;">
+                      Select a bus route to fetch active location coordinates and live ETA schedules.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- MMTS COMMUTER BOARD -->
+                <div class="glass-card">
+                  <div class="glass-card-header" style="margin-bottom:12px; padding-bottom:8px;">
+                    <h3>
+                      <svg viewBox="0 0 24 24" style="stroke:var(--accent-emerald); fill:none; stroke-width:2; width:18px; height:18px;"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 19h6M12 3v16M4 9h16M4 14h16"/></svg>
+                      <span>MMTS - Where is my Train Board</span>
+                    </h3>
+                    <span class="suggestion-category" style="background: rgba(16,185,129,0.15); color: var(--accent-emerald); font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: var(--radius-sm);">Rail Board API</span>
+                  </div>
+                  <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5;">
+                    Monitor local MMTS suburban train timelines. Fetches live status and station timings from the Where is My Train rail grid.
+                  </p>
+                  <div class="form-group">
+                    <label style="font-size: 11px; text-transform: uppercase; color: var(--heritage-gold); font-weight: 600; display:block; margin-bottom:6px;">Select MMTS Corridor</label>
+                    <select class="form-control" id="mmtsRoute" onchange="trackMmtsTrain()">
+                      <option value="" disabled selected>Select corridor...</option>
+                      <option value="hyd_lpi">Hyderabad (Nampally) ⇄ Lingampalli (Red Corridor)</option>
+                      <option value="sec_lpi">Secunderabad ⇄ Lingampalli (Blue Corridor)</option>
+                      <option value="fal_sec">Falaknuma ⇄ Secunderabad (Green Corridor)</option>
+                    </select>
+                  </div>
+                  <div id="mmtsResultsContainer" class="transit-results-box" style="margin-top: 16px;">
+                    <div style="font-size: 12.5px; color: var(--text-muted); text-align: center; padding: 20px;">
+                      Select an MMTS corridor to display active train locations and timing schedules.
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 

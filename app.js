@@ -3028,3 +3028,242 @@ function navigateToSearchSelection(name, category) {
   }
 }
 
+/* 15. TGSRTC Gamyam and Where is my Train API Feed Simulation */
+window.trackGamyamBus = function() {
+  const route = document.getElementById("gamyamBusRoute").value;
+  const container = document.getElementById("gamyamResultsContainer");
+  if (!route || !container) return;
+
+  container.innerHTML = `
+    <div style="text-align:center; padding:20px; font-size:12.5px; color:var(--text-secondary); display:flex; flex-direction:column; align-items:center; gap:8px;">
+      <svg viewBox="0 0 100 100" class="logo-icon" style="width:24px; height:24px; animation: float 3s ease-in-out infinite;">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="var(--heritage-gold)" stroke-width="6"/>
+        <path d="M35 50 L65 50 M50 35 L50 65" stroke="var(--heritage-gold)" stroke-width="10"/>
+      </svg>
+      Connecting to TGSRTC Gamyam API...
+    </div>
+  `;
+
+  const BUS_DATA = {
+    "127K": {
+      no: "127K",
+      type: "Metro AC Luxury",
+      coach: "TS 09 Z 4812",
+      status: "running",
+      delay: "On Time",
+      current: "Ameerpet Junction",
+      stops: [
+        { name: "Koti Bus Terminal", time: "Passed" },
+        { name: "Lakdikapul", time: "Passed" },
+        { name: "Ameerpet Junction", time: "Arrived" },
+        { name: "Madhapur PS", time: "14 Mins" },
+        { name: "HITEC City Hub", time: "20 Mins" },
+        { name: "Kondapur Terminal", time: "26 Mins" }
+      ]
+    },
+    "218": {
+      no: "218",
+      type: "Metro Express",
+      coach: "TS 12 Y 7721",
+      status: "running",
+      delay: "On Time",
+      current: "Kukatpally",
+      stops: [
+        { name: "Koti Bus Terminal", time: "Passed" },
+        { name: "Lakdikapul", time: "Passed" },
+        { name: "Ameerpet Junction", time: "Passed" },
+        { name: "Kukatpally", time: "Arrived" },
+        { name: "Miyapur X Roads", time: "10 Mins" },
+        { name: "Patancheru Terminus", time: "29 Mins" }
+      ]
+    },
+    "10H": {
+      no: "10H",
+      type: "Metro Express",
+      coach: "TS 07 Z 1904",
+      status: "delayed",
+      delay: "+6 Mins Late",
+      current: "Begumpet Flyover",
+      stops: [
+        { name: "Secunderabad Station", time: "Passed" },
+        { name: "Begumpet Flyover", time: "Arrived" },
+        { name: "Ameerpet Junction", time: "12 Mins" },
+        { name: "Madhapur PS", time: "26 Mins" },
+        { name: "HITEC City Hub", time: "32 Mins" },
+        { name: "Kondapur Terminal", time: "39 Mins" }
+      ]
+    },
+    "9F": {
+      no: "9F",
+      type: "City Ordinary",
+      coach: "TS 11 X 2309",
+      status: "running",
+      delay: "On Time",
+      current: "RTC X Roads",
+      stops: [
+        { name: "Secunderabad Station", time: "Passed" },
+        { name: "Musheerabad", time: "Passed" },
+        { name: "RTC X Roads", time: "Arrived" },
+        { name: "Koti Bus Terminal", time: "15 Mins" }
+      ]
+    },
+    "229": {
+      no: "229",
+      type: "Metro Express",
+      coach: "TS 08 Z 5510",
+      status: "delayed",
+      delay: "+12 Mins Late",
+      current: "Suchitra Circle",
+      stops: [
+        { name: "Secunderabad Station", time: "Passed" },
+        { name: "Patny Circle", time: "Passed" },
+        { name: "Suchitra Circle", time: "Arrived" },
+        { name: "Kompally Junction", time: "22 Mins" },
+        { name: "Medchal Terminal", time: "38 Mins" }
+      ]
+    }
+  };
+
+  setTimeout(() => {
+    const data = BUS_DATA[route];
+    if (!data) return;
+
+    const statusText = data.status === "running" ? "Running" : "Delayed";
+    const statusClass = data.status;
+
+    container.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:8px;">
+        <div>
+          <strong style="font-family:var(--font-title); font-size:14.5px; color:var(--light-gold);">${data.type} #${data.no}</strong>
+          <span style="font-size:11px; color:var(--text-muted); display:block; margin-top:2px;">Coach: ${data.coach}</span>
+        </div>
+        <div style="text-align:right;">
+          <span class="transit-status-badge ${statusClass}">${statusText}</span>
+          <span style="font-size:11px; display:block; margin-top:4px; font-weight:600; color:${data.status === 'running' ? 'var(--accent-emerald)' : 'var(--safety-crimson)'};">${data.delay}</span>
+        </div>
+      </div>
+      
+      <div style="font-size:12.5px; color:var(--text-secondary); margin-bottom:12px;">
+        📍 Current Active Node: <strong style="color:var(--text-primary);">${data.current}</strong>
+      </div>
+
+      <div class="transit-timeline">
+        ${data.stops.map(stop => {
+          let nodeClass = "";
+          if (stop.time === "Passed") nodeClass = "passed";
+          else if (stop.time === "Arrived") nodeClass = "active";
+          return `
+            <div class="transit-timeline-node ${nodeClass}">
+              <span class="node-station">${stop.name}</span>
+              <span class="node-eta">${stop.time}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }, 1000);
+};
+
+window.trackMmtsTrain = function() {
+  const route = document.getElementById("mmtsRoute").value;
+  const container = document.getElementById("mmtsResultsContainer");
+  if (!route || !container) return;
+
+  container.innerHTML = `
+    <div style="text-align:center; padding:20px; font-size:12.5px; color:var(--text-secondary); display:flex; flex-direction:column; align-items:center; gap:8px;">
+      <svg viewBox="0 0 100 100" class="logo-icon" style="width:24px; height:24px; animation: float 3s ease-in-out infinite;">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="var(--accent-emerald)" stroke-width="6"/>
+        <path d="M35 50 L65 50 M50 35 L50 65" stroke="var(--accent-emerald)" stroke-width="10"/>
+      </svg>
+      Connecting to Where is My Train API...
+    </div>
+  `;
+
+  const MMTS_DATA = {
+    "hyd_lpi": {
+      no: "47108",
+      name: "HYD-LPI Red Line Local",
+      status: "delayed",
+      delay: "+4 Mins Late",
+      current: "Khairatabad",
+      stops: [
+        { name: "Hyderabad Nampally", time: "10:00 AM (Passed)" },
+        { name: "Lakdikapul", time: "10:04 AM (Passed)" },
+        { name: "Khairatabad", time: "10:12 AM (Arrived)" },
+        { name: "Begumpet", time: "10:21 AM (ETA)" },
+        { name: "Hafizpet", time: "10:36 AM (ETA)" },
+        { name: "Lingampalli", time: "10:49 AM (ETA)" }
+      ]
+    },
+    "sec_lpi": {
+      no: "47120",
+      name: "SC-LPI Blue Line Local",
+      status: "running",
+      delay: "On Time",
+      current: "Begumpet",
+      stops: [
+        { name: "Secunderabad Jn", time: "11:15 AM (Passed)" },
+        { name: "James Street", time: "11:20 AM (Passed)" },
+        { name: "Begumpet", time: "11:28 AM (Arrived)" },
+        { name: "Sanathnagar", time: "11:35 AM (ETA)" },
+        { name: "Hafizpet", time: "11:47 AM (ETA)" },
+        { name: "Lingampalli", time: "12:02 PM (ETA)" }
+      ]
+    },
+    "fal_sec": {
+      no: "47155",
+      name: "FM-SC Green Line Local",
+      status: "delayed",
+      delay: "+1 Min Late",
+      current: "Yakutpura",
+      stops: [
+        { name: "Falaknuma", time: "02:30 PM (Passed)" },
+        { name: "Yakutpura", time: "02:36 PM (Arrived)" },
+        { name: "Malakpet", time: "02:43 PM (ETA)" },
+        { name: "Kacheguda", time: "02:49 PM (ETA)" },
+        { name: "Vidyanagar", time: "02:54 PM (ETA)" },
+        { name: "Secunderabad Jn", time: "03:11 PM (ETA)" }
+      ]
+    }
+  };
+
+  setTimeout(() => {
+    const data = MMTS_DATA[route];
+    if (!data) return;
+
+    const statusText = data.status === "running" ? "Running" : "Delayed";
+    const statusClass = data.status;
+
+    container.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:8px;">
+        <div>
+          <strong style="font-family:var(--font-title); font-size:14.5px; color:var(--light-gold);">MMTS #${data.no}</strong>
+          <span style="font-size:11px; color:var(--text-muted); display:block; margin-top:2px;">${data.name}</span>
+        </div>
+        <div style="text-align:right;">
+          <span class="transit-status-badge ${statusClass}">${statusText}</span>
+          <span style="font-size:11px; display:block; margin-top:4px; font-weight:600; color:${data.status === 'running' ? 'var(--accent-emerald)' : 'var(--safety-crimson)'};">${data.delay}</span>
+        </div>
+      </div>
+      
+      <div style="font-size:12.5px; color:var(--text-secondary); margin-bottom:12px;">
+        📍 Current Active Node: <strong style="color:var(--text-primary);">${data.current}</strong>
+      </div>
+
+      <div class="transit-timeline">
+        ${data.stops.map(stop => {
+          let nodeClass = "";
+          if (stop.time.includes("(Passed)")) nodeClass = "passed";
+          else if (stop.time.includes("(Arrived)")) nodeClass = "active";
+          return `
+            <div class="transit-timeline-node ${nodeClass}">
+              <span class="node-station">${stop.name}</span>
+              <span class="node-eta">${stop.time.split(" ")[0]} ${stop.time.split(" ")[1]}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }, 1000);
+};
+

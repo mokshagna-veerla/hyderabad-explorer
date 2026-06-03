@@ -2971,6 +2971,91 @@ body.accessibility-high-contrast .showtime-pill.active {
   text-overflow: ellipsis;
 }
 
+/* TGSRTC Gamyam & MMTS Timelines */
+.transit-results-box {
+  background: rgba(10, 14, 23, 0.4);
+  border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  min-height: 120px;
+}
+
+.transit-status-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+}
+
+.transit-status-badge.running {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-emerald);
+}
+
+.transit-status-badge.delayed {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--safety-crimson);
+}
+
+.transit-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.transit-timeline::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 5px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.transit-timeline-node {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+}
+
+.transit-timeline-node::before {
+  content: "";
+  position: absolute;
+  left: -19px;
+  top: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+
+.transit-timeline-node.active::before {
+  background: var(--heritage-gold);
+  box-shadow: 0 0 8px var(--heritage-gold);
+}
+
+.transit-timeline-node.passed::before {
+  background: var(--primary-teal);
+}
+
+.transit-timeline-node .node-station {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.transit-timeline-node .node-eta {
+  font-family: monospace;
+  color: var(--light-gold);
+  font-weight: 600;
+}
+
 
 
 
