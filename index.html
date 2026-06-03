@@ -467,6 +467,25 @@
                   <!-- Lines updates populated dynamically -->
                 </div>
               </div>
+              
+              <!-- HYDERABAD METRO MAP CARD -->
+              <div class="glass-card metro-map-card">
+                <div class="glass-card-header" style="margin-bottom:12px; padding-bottom:8px;">
+                  <h3>
+                    <svg viewBox="0 0 24 24" style="stroke:currentColor; fill:none; stroke-width:1.8; width:18px; height:18px;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg>
+                    <span>Hyderabad Metro Network Map</span>
+                  </h3>
+                </div>
+                <p style="font-size:12.5px; color:var(--text-secondary); line-height:1.5; margin-bottom:12px;">
+                  Tap on the map below to view the full schematic route network of Red, Blue, and Green lines.
+                </p>
+                <div class="metro-map-img-container" style="border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--bg-card-border); background:rgba(0,0,0,0.3); cursor:pointer; position:relative; transition:var(--transition-normal);" onclick="openMetroMapModal()">
+                  <img src="hyderabad_metro_map.png" alt="Hyderabad Metro Network Map" style="width:100%; height:auto; display:block; transition:transform 0.4s ease;">
+                  <div class="metro-map-hover-overlay" style="position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(10,14,23,0.5); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity var(--transition-fast);">
+                    <span style="background:var(--heritage-gold); color:var(--bg-slate); font-family:var(--font-title); font-size:11px; font-weight:700; padding:6px 12px; border-radius:var(--radius-sm); text-transform:uppercase; letter-spacing:0.5px;">Click to Expand</span>
+                  </div>
+                </div>
+              </div>
 
               <div class="glass-card quick-sos-card">
                 <div class="glass-card-header">
@@ -1100,6 +1119,19 @@
 
       </div>
     </main>
+
+    <!-- METRO MAP EXPAND MODAL -->
+    <div class="modal-overlay" id="metroMapModalOverlay">
+      <div class="modal-card" style="max-width: 900px; width: 90%; background: var(--bg-slate); border: 1px solid var(--bg-card-border);">
+        <div class="modal-header">
+          <h3 style="font-family: var(--font-title); font-size: 20px; color: var(--light-gold);">Hyderabad Metro Network Map</h3>
+          <button class="modal-close-btn" onclick="closeMetroMapModal()">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 12px; display: flex; justify-content: center; align-items: center; overflow: auto; max-height: 80vh;">
+          <img src="hyderabad_metro_map.png" alt="Hyderabad Metro Network Map" style="max-width: 100%; height: auto; border-radius: var(--radius-sm);">
+        </div>
+      </div>
+    </div>
 
     <!-- CHECKOUT / PASS BOOKING MODAL -->
     <div class="modal-overlay" id="checkoutModalOverlay">

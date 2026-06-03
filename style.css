@@ -2868,6 +2868,15 @@ body.accessibility-high-contrast .showtime-pill.active {
   color: #000000 !important;
 }
 
+/* Metro Map Card Hover Interaction */
+.metro-map-img-container:hover img {
+  transform: scale(1.03);
+}
+
+.metro-map-img-container:hover .metro-map-hover-overlay {
+  opacity: 1 !important;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }

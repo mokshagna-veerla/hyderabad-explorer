@@ -2850,3 +2850,14 @@ function submitGoogleCustomAccount() {
   selectGoogleAccount(name, email, mockAvatar);
 }
 
+/* 13. Hyderabad Metro Map Expanded View Modal helper functions */
+window.openMetroMapModal = function() {
+  const overlay = document.getElementById("metroMapModalOverlay");
+  if (overlay) overlay.style.display = "flex";
+};
+
+window.closeMetroMapModal = function() {
+  const overlay = document.getElementById("metroMapModalOverlay");
+  if (overlay) overlay.style.display = "none";
+};
+
