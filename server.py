@@ -8,6 +8,20 @@ import urllib.parse
 import traceback
 import sqlite3
 
+# Load environment variables from local .env file if it exists
+env_path = os.path.join(os.getcwd(), ".env")
+if os.path.exists(env_path):
+    print("[INFO] Loading environment variables from .env file...")
+    try:
+        with open(env_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, val = line.split("=", 1)
+                    os.environ[key.strip()] = val.strip().strip("'\"")
+    except Exception as e:
+        print(f"[WARN] Failed to load .env file: {e}")
+
 PORT = int(os.environ.get("PORT", 8000))
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")

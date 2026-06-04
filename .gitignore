@@ -9,3 +9,4 @@ data/*.json.bak
 .system_generated/
 .DS_Store
 Thumbs.db
+.env
