@@ -25,7 +25,7 @@ if os.path.exists(env_path):
 PORT = int(os.environ.get("PORT", 8000))
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
-DATA_DIR = "/data" if os.environ.get("RENDER") or os.path.isdir("/data") else "./data"
+DATA_DIR = "/data" if os.environ.get("RENDER") or os.path.isdir("/data") else ("/tmp" if os.environ.get("VERCEL") else "./data")
 BOOKINGS_FILE = os.path.join(DATA_DIR, "bookings.json")
 COMPLAINTS_FILE = os.path.join(DATA_DIR, "complaints.json")
 REVIEWS_FILE = os.path.join(DATA_DIR, "reviews.json")
