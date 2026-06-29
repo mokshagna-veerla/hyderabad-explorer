@@ -648,9 +648,13 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         if reply_text:
             self.send_json_response({"status": "success", "reply": reply_text}, 200)
         else:
+            err_str = str(last_error)
             print(f"Error calling Google AI Studio API: {last_error}")
-            traceback.print_exc()
-            self.send_json_response({"reply": "Adaab! I encountered a temporary connection issue reaching Google AI Studio. Please verify your API key!"}, 200)
+            if "429" in err_str:
+                msg = "Adaab! Google AI Studio is temporarily rate-limited due to frequent requests. Please wait a few seconds and ask again!"
+            else:
+                msg = "Adaab! I encountered a temporary connection issue reaching Google AI Studio. Please verify your network connection and API key!"
+            self.send_json_response({"reply": msg}, 200)
 
     def serve_config_error(self, message):
         html = f"""<!DOCTYPE html>
