@@ -610,8 +610,6 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             }, 200)
             return
 
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
-        
         system_instruction = (
             "You are 'Nizam AI', an enthusiastic, polite, and deeply knowledgeable local AI concierge for Hyderabad, India (The City of Pearls). "
             "Your tone is warm, culturally rich (using friendly Hyderabadi greetings like 'Adaab', 'Namaskaram', or 'Zabardast'), and helpful. "
@@ -629,15 +627,28 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             ]
         }
 
-        try:
-            req_data = json.dumps(gemini_payload).encode('utf-8')
-            req = urllib.request.Request(url, data=req_data, headers={"Content-Type": "application/json"})
-            with urllib.request.urlopen(req, timeout=12) as response:
-                res_data = json.loads(response.read().decode('utf-8'))
-                reply_text = res_data['candidates'][0]['content']['parts'][0]['text']
-                self.send_json_response({"status": "success", "reply": reply_text}, 200)
-        except Exception as e:
-            print(f"Error calling Google AI Studio API: {e}")
+        models_to_try = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-latest"]
+        reply_text = None
+        last_error = None
+
+        for model_name in models_to_try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_API_KEY}"
+            try:
+                req_data = json.dumps(gemini_payload).encode('utf-8')
+                req = urllib.request.Request(url, data=req_data, headers={"Content-Type": "application/json"})
+                with urllib.request.urlopen(req, timeout=12) as response:
+                    res_data = json.loads(response.read().decode('utf-8'))
+                    reply_text = res_data['candidates'][0]['content']['parts'][0]['text']
+                    break
+            except Exception as e:
+                print(f"[WARN] Failed calling model {model_name}: {e}")
+                last_error = e
+                continue
+
+        if reply_text:
+            self.send_json_response({"status": "success", "reply": reply_text}, 200)
+        else:
+            print(f"Error calling Google AI Studio API: {last_error}")
             traceback.print_exc()
             self.send_json_response({"reply": "Adaab! I encountered a temporary connection issue reaching Google AI Studio. Please verify your API key!"}, 200)
 
