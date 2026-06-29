@@ -452,6 +452,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize User Authentication System
   initAuthSystem();
 
+  // Initialize Nizam AI Concierge Chatbot
+  initAIChatbot();
+
   // Fluctuate Traffic
   initTrafficMonitor();
 
@@ -3284,4 +3287,116 @@ window.trackMmtsTrain = function() {
     `;
   }, 1000);
 };
+
+/* ==========================================================================
+   14. Nizam AI Concierge Chatbot Routines
+   ========================================================================== */
+
+function initAIChatbot() {
+  const toggleBtn = document.getElementById("aiChatToggleBtn");
+  const closeBtn = document.getElementById("aiChatCloseBtn");
+  const chatWindow = document.getElementById("aiChatWindow");
+  const sendBtn = document.getElementById("aiChatSendBtn");
+  const inputEl = document.getElementById("aiChatInput");
+  const chips = document.querySelectorAll(".chip-btn");
+
+  if (!toggleBtn || !chatWindow) return;
+
+  toggleBtn.addEventListener("click", () => {
+    const isHidden = chatWindow.style.display === "none";
+    chatWindow.style.display = isHidden ? "flex" : "none";
+    if (isHidden && inputEl) inputEl.focus();
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      chatWindow.style.display = "none";
+    });
+  }
+
+  if (sendBtn) {
+    sendBtn.addEventListener("click", sendAIChatMessage);
+  }
+
+  if (inputEl) {
+    inputEl.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendAIChatMessage();
+    });
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      const prompt = chip.getAttribute("data-prompt");
+      if (prompt) {
+        if (inputEl) inputEl.value = prompt;
+        sendAIChatMessage();
+      }
+    });
+  });
+}
+
+async function sendAIChatMessage() {
+  const inputEl = document.getElementById("aiChatInput");
+  const chatLog = document.getElementById("aiChatLog");
+  if (!inputEl || !chatLog) return;
+
+  const text = inputEl.value.trim();
+  if (!text) return;
+
+  // Render User Message
+  appendChatMessage("user", text);
+  inputEl.value = "";
+
+  // Render Typing Indicator Placeholder
+  const typingId = "typing-" + Date.now();
+  const typingEl = document.createElement("div");
+  typingEl.className = "ai-msg bot-msg";
+  typingEl.id = typingId;
+  typingEl.innerHTML = `<div class="msg-bubble" style="color: #94a3b8; font-style: italic;">✨ Nizam AI is thinking...</div>`;
+  chatLog.appendChild(typingEl);
+  chatLog.scrollTop = chatLog.scrollHeight;
+
+  try {
+    const res = await fetch("/api/ai/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text })
+    });
+    const data = await res.json();
+    
+    // Remove typing placeholder
+    const pEl = document.getElementById(typingId);
+    if (pEl) pEl.remove();
+
+    if (data.reply) {
+      appendChatMessage("bot", data.reply);
+    } else {
+      appendChatMessage("bot", "Adaab! I am having trouble forming a response right now. Please try again shortly.");
+    }
+  } catch (err) {
+    console.error("AI Chatbot error:", err);
+    const pEl = document.getElementById(typingId);
+    if (pEl) pEl.remove();
+    appendChatMessage("bot", "Adaab! Network connection issue reaching the AI server. Please verify your connection!");
+  }
+}
+
+function appendChatMessage(sender, text) {
+  const chatLog = document.getElementById("aiChatLog");
+  if (!chatLog) return;
+
+  const msgDiv = document.createElement("div");
+  msgDiv.className = `ai-msg ${sender}-msg`;
+
+  // Basic formatting for bold text and bullet points in AI responses
+  let formattedText = text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n\* /g, '<br>• ')
+    .replace(/\n/g, '<br>');
+
+  msgDiv.innerHTML = `<div class="msg-bubble">${formattedText}</div>`;
+  chatLog.appendChild(msgDiv);
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
 

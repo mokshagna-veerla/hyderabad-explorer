@@ -25,6 +25,7 @@ if os.path.exists(env_path):
 PORT = int(os.environ.get("PORT", 8000))
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 DATA_DIR = "/data" if os.environ.get("RENDER") or os.path.isdir("/data") else ("/tmp" if os.environ.get("VERCEL") else "./data")
 BOOKINGS_FILE = os.path.join(DATA_DIR, "bookings.json")
 COMPLAINTS_FILE = os.path.join(DATA_DIR, "complaints.json")
@@ -256,6 +257,8 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.handle_post_signup(payload)
             elif self.path == "/api/login":
                 self.handle_post_login(payload)
+            elif self.path == "/api/ai/chat":
+                self.handle_post_ai_chat(payload)
             else:
                 self.send_json_response({"error": "Endpoint not found"}, 404)
         except Exception as e:
@@ -594,6 +597,49 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         except Exception as e:
             print(f"Error in handle_post_login: {e}")
             self.send_error_response("Database error", 500)
+
+    def handle_post_ai_chat(self, payload):
+        user_msg = payload.get("message", "").strip()
+        if not user_msg:
+            self.send_json_response({"error": "Message is required"}, 400)
+            return
+
+        if not GEMINI_API_KEY:
+            self.send_json_response({
+                "reply": "Adaab! I am Nizam AI, your Hyderabad concierge. To activate my full AI capabilities, please add your `GEMINI_API_KEY` to your `.env` file!"
+            }, 200)
+            return
+
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
+        
+        system_instruction = (
+            "You are 'Nizam AI', an enthusiastic, polite, and deeply knowledgeable local AI concierge for Hyderabad, India (The City of Pearls). "
+            "Your tone is warm, culturally rich (using friendly Hyderabadi greetings like 'Adaab', 'Namaskaram', or 'Zabardast'), and helpful. "
+            "You provide concise, structured, and practical advice regarding Hyderabad monuments (Charminar, Golconda, Chowmahalla), biryani & Irani chai spots (Niloufer, Paradise, Shah Ghouse), "
+            "Hyderabad Metro & TSRTC transit advice, IT hubs (HITEC City, Gachibowli), weather, and city administration. "
+            "Keep answers engaging, formatted with bullet points where appropriate, and concise."
+        )
+
+        gemini_payload = {
+            "contents": [
+                {
+                    "role": "user",
+                    "parts": [{"text": f"System Context: {system_instruction}\n\nUser Question: {user_msg}"}]
+                }
+            ]
+        }
+
+        try:
+            req_data = json.dumps(gemini_payload).encode('utf-8')
+            req = urllib.request.Request(url, data=req_data, headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(req, timeout=12) as response:
+                res_data = json.loads(response.read().decode('utf-8'))
+                reply_text = res_data['candidates'][0]['content']['parts'][0]['text']
+                self.send_json_response({"status": "success", "reply": reply_text}, 200)
+        except Exception as e:
+            print(f"Error calling Google AI Studio API: {e}")
+            traceback.print_exc()
+            self.send_json_response({"reply": "Adaab! I encountered a temporary connection issue reaching Google AI Studio. Please verify your API key!"}, 200)
 
     def serve_config_error(self, message):
         html = f"""<!DOCTYPE html>
